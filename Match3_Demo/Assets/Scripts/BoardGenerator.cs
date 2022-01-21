@@ -10,6 +10,9 @@ public class BoardGenerator : MonoBehaviour
     [SerializeField]
     private int boardSize;
 
+    [SerializeField]
+    private float cellSize;
+
     private DropColor.DropColorState[,] board;
     
     void Start()
@@ -25,9 +28,9 @@ public class BoardGenerator : MonoBehaviour
             for (int j = 0; j < boardSize; i++)
             {
                 int randomNum = Random.Range((int) DropColor.DropColorState.Red, (int) DropColor.DropColorState.Green + 1);
-                Vector2 spawnPos = new Vector3(j * 1.5f, 0f, i * 1.5f );
+                Vector3 spawnPos = new Vector3(j * cellSize, 0f, i * cellSize );
                 GameObject obj = Instantiate(dropPrefabs[randomNum], spawnPos, Quaternion.identity);
-                obj.transform.parent = transform.parent;
+                // obj.transform.parent = transform.parent;
 
                 // board[i,j] = obj.GetComponent<Drop>().DropColorInfo;
             }
