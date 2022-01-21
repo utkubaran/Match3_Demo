@@ -13,6 +13,10 @@ public class BoardGenerator : MonoBehaviour
     [SerializeField]
     private float cellSize;
 
+    private int randomNum;
+
+    private Vector3 spawnPos;
+
     private DropColor.DropColorState[,] board;
     
     void Start()
@@ -25,15 +29,32 @@ public class BoardGenerator : MonoBehaviour
     {
         for (int i = 0; i < boardSize; i++)
         {
-            for (int j = 0; j < boardSize; i++)
+            for (int j = 0; j < boardSize; j++)
             {
-                int randomNum = Random.Range((int) DropColor.DropColorState.Red, (int) DropColor.DropColorState.Green + 1);
-                Vector3 spawnPos = new Vector3(j * cellSize, 0f, i * cellSize );
-                GameObject obj = Instantiate(dropPrefabs[randomNum], spawnPos, Quaternion.identity);
-                // obj.transform.parent = transform.parent;
+                randomNum = Random.Range(0, 4);
 
-                // board[i,j] = obj.GetComponent<Drop>().DropColorInfo;
+                CheckDropsInRow(i, j, randomNum);
+
+                spawnPos = new Vector3(i * cellSize, 0f, j * cellSize );
+                GameObject obj = Instantiate(dropPrefabs[randomNum], spawnPos, Quaternion.identity);
+                obj.transform.parent = this.transform;
+                board[i,j] = obj.GetComponent<Drop>().DropColorInfo;
             }
+        }
+    }
+
+    private void CheckDropsInRow(int row, int column, int num)
+    {
+        if (row - 2 < 0 ) return;
+
+        DropColor.DropColorState doublePreviosDrop = board[row - 2, column];
+        DropColor.DropColorState previosDrop = board[row - 1, column];
+        DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
+
+        while((previosDrop == doublePreviosDrop) && (currentDrop == previosDrop))
+        {
+            randomNum = Random.Range(0, 4);
+            currentDrop = (DropColor.DropColorState)num;
         }
     }
 }
