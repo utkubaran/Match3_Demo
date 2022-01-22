@@ -31,11 +31,13 @@ public class BoardDropSpawner : MonoBehaviour
 
     private void SpawnDrops(List<Transform> drops)
     {
+        return;
+        
         foreach (var drop in drops)
         {
-            Debug.Log(drop.position);
-            
-            /*
+            // todo check neighbour drops before spawning
+
+            /*   
             int randomNum = Random.Range(0 ,4);
             GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, drop.position, Quaternion.identity);
             int rowPosition = (int)drop.position.x / (int)cellSize;

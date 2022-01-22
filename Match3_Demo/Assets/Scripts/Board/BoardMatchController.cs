@@ -20,6 +20,7 @@ public class BoardMatchController : MonoBehaviour
         EventManager.OnPlayerSwiped.AddListener( () => boardArr = board.boardArray );
         EventManager.OnPlayerSwiped.AddListener(CheckMatchesInRows);
         EventManager.OnPlayerSwiped.AddListener(CheckMatchesInColumns);
+        EventManager.OnPlayerSwiped.AddListener(HandleMatches);
     }
 
     private void OnDisable()
@@ -27,6 +28,7 @@ public class BoardMatchController : MonoBehaviour
         EventManager.OnPlayerSwiped.RemoveListener( () => boardArr = board.boardArray );
         EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInRows);
         EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInColumns);
+        EventManager.OnPlayerSwiped.RemoveListener(HandleMatches);
     }
 
     void Start()
@@ -175,17 +177,19 @@ public class BoardMatchController : MonoBehaviour
                 }
             }
         }
+    }
 
+    private void HandleMatches()
+    {
+        
         matchedDrops = matchedDrops.Distinct().ToList();
 
         if (hasMatch)
         {
-            /*
             foreach (var drop in matchedDrops)
             {
                 drop.gameObject.SetActive(false);
             }
-            */
 
             EventManager.OnMatch?.Invoke(matchedDrops);
             hasMatch = false;
@@ -195,108 +199,4 @@ public class BoardMatchController : MonoBehaviour
             EventManager.OnNoMatch?.Invoke();
         }
     }
-
-    private List<Transform> GetMatchedDrops()
-    {
-        matchedDrops = matchedDrops.Distinct().ToList();
-        return matchedDrops;
-    }
-
-    /*
-    private void CheckMatchInRows()
-    {
-        for (int row = 0; row < boardSize; row++)
-        {
-            for (int column = 2; column < boardSize; column++)
-            {
-                DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
-                DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
-                DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
-
-                if ((twoPreviousDrop == currentDrop) && (previousDrop == currentDrop))
-                {
-                    if (column + 1 < boardSize)
-                    {
-                        DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
-
-                        if (followingDrop == currentDrop)
-                        {
-                            if (column + 2 < boardSize)
-                            {
-                                DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
-
-                                if (twoFollowingDrop == currentDrop)
-                                {
-                                    Debug.Log("It's a 5 row match!");
-                                }
-                                else
-                                {
-                                    Debug.Log("It's a 4 row match!");
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("It's a 4 row match!");
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("It's a 3 row match!");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void CheckMatchInColumns()
-    {
-        for (int column = 0; column < boardSize; column++)
-        {
-            for (int row = 2; row < boardSize; row++)
-            {
-                DropColor.DropColorState twoUpperDrop = boardArr[row - 2, column].GetComponent<Drop>().DropColorInfo;;
-                DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
-                DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
-
-                if ((twoUpperDrop == currentDrop) && (upperDrop == currentDrop))
-                {
-                    if (row + 1 < boardSize)
-                    {
-                        DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
-
-                        if (lowerDrop == currentDrop)
-                        {
-                            if (row + 2 < boardSize)
-                            {
-                                DropColor.DropColorState twoFollowingDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
-
-                                if (twoFollowingDrop == currentDrop)
-                                {
-                                    Debug.Log("It's a 5 column match!");
-                                }
-                                else
-                                {
-                                    Debug.Log("It's a 4 column match!");
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("It's a 4 column match!");
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("It's a 3 column match!");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("It's a 3 column match!");
-                    }
-                }
-            }
-        }
-    }
-    */
 }
