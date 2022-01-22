@@ -11,7 +11,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     private Board board;
 
-    private Vector3Int positionInfo;
+    private Vector3Int positionInfo, previousPositionInfo;
     public Vector3Int PositionInfo { get { return positionInfo; } set { positionInfo = value; } }
 
     private void OnEnable()
@@ -108,7 +108,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     private void ChangePlace(Vector3 movementDir, int rowChange, int columnChange)
     {
-        // Debug.Log("I moved : " + positionInfo);
         positionInfo.x += rowChange;
         positionInfo.z += columnChange;
         this.transform.position += movementDir * board.CellSize;
