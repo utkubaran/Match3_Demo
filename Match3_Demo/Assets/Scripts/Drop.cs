@@ -24,7 +24,13 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     public void OnSwiped(Vector3 movementDir)
     {
-        Debug.Log("I worked!");
         this.transform.position += movementDir;
+
+        CheckSurround();
+    }
+
+    private void CheckSurround()
+    {
+        return;
     }
 }

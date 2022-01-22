@@ -67,12 +67,32 @@ public class PlayerInputController : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             finalPos = Input.mousePosition;
-            movementDirection = new Vector3(finalPos.x - startPos.x, 0f, finalPos.y - startPos.y);
+            // movementDirection = new Vector3(finalPos.x - startPos.x, 0f, finalPos.y - startPos.y);
+            float xDif = finalPos.x - startPos.x;
+            float zDif = finalPos.y - startPos.y;
+            bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
+
+            if (isMovementOnX && xDif > 0)
+            {
+                movementDirection = Vector3.right;
+            }
+            else if (isMovementOnX && xDif <= 0)
+            {
+                movementDirection = Vector3.left;
+            }
+            else if (!isMovementOnX && zDif > 0)
+            {
+                movementDirection = Vector3.forward;
+            }
+            else if (!isMovementOnX && zDif <= 0)
+            {
+                movementDirection = Vector3.back;
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
             if (selectedDrop == null) return;
-            selectedDrop.GetComponent<Drop>().OnSwiped(movementDirection.normalized);
+            selectedDrop.GetComponent<Drop>().OnSwiped(movementDirection);
             movementDirection = Vector3.zero;
             selectedDrop = null;
         }
