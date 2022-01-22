@@ -47,12 +47,10 @@ public class BoardGenerator : MonoBehaviour
         bool isSequentInRow;
         bool isSequentInColumn;
 
-        DropColor.DropColorState twoPreviousDrop = 0;
-        DropColor.DropColorState previousDrop = 0;
-
         DropColor.DropColorState twoUpperDrop = 0;
         DropColor.DropColorState upperDrop = 0;
-
+        DropColor.DropColorState twoPreviousDrop = 0;
+        DropColor.DropColorState previousDrop = 0;
         DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
 
         if (row - 2 < 0 )
@@ -61,9 +59,9 @@ public class BoardGenerator : MonoBehaviour
         }
         else
         {
-            twoPreviousDrop = board.boardArray[row - 2, column].GetComponent<Drop>().DropColorInfo;
-            previousDrop = board.boardArray[row - 1, column].GetComponent<Drop>().DropColorInfo;
-            isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
+            twoUpperDrop = board.boardArray[row - 2, column].GetComponent<Drop>().DropColorInfo;
+            upperDrop = board.boardArray[row - 1, column].GetComponent<Drop>().DropColorInfo;
+            isSequentInRow = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
         }
 
         if (column - 2 < 0)
@@ -72,30 +70,17 @@ public class BoardGenerator : MonoBehaviour
         }
         else
         {
-            twoUpperDrop = board.boardArray[row, column - 2].GetComponent<Drop>().DropColorInfo;
-            upperDrop = board.boardArray[row, column - 1].GetComponent<Drop>().DropColorInfo;
-            isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
+            twoPreviousDrop = board.boardArray[row, column - 2].GetComponent<Drop>().DropColorInfo;
+            previousDrop = board.boardArray[row, column - 1].GetComponent<Drop>().DropColorInfo;
+            isSequentInColumn = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
         }
 
         while (isSequentInRow || isSequentInColumn)
         {
             num = Random.Range(0, 4);
             currentDrop = (DropColor.DropColorState)num;
-            isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
-            isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
-
-            /*
-            if (isSequentInColumn)
-            {
-                isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
-                isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
-            } 
-            else if (isSequentInRow)
-            {
-                isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
-                isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
-            }
-            */
+            isSequentInColumn = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
+            isSequentInRow = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
         }
 
         randomNum = num;

@@ -7,16 +7,11 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
-    [SerializeField]
-    private float movetimer;
-
     private Camera mainCam;
 
     private Vector3 startPos, finalPos, swipeDirection;
 
     private Transform selectedDrop;
-
-    private float timeRemaining;
 
     private bool isPlaying;
 
@@ -28,12 +23,10 @@ public class PlayerInputController : MonoBehaviour
     void Start()
     {
         isPlaying = true;       // todo refactor after events are enabled
-        timeRemaining = movetimer;
     }
 
     void Update()
     {
-        // CheckTimer();
         GetSwipeDirectionFromPlayer();
     }
 
