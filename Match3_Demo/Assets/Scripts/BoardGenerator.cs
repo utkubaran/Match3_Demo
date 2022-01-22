@@ -14,6 +14,8 @@ public class BoardGenerator : MonoBehaviour
     [SerializeField]
     private float cellSize;
 
+    private ObjectPooler objectPooler;
+
     private int randomNum;
 
     private Vector3 spawnPos;
@@ -22,6 +24,7 @@ public class BoardGenerator : MonoBehaviour
     
     void Start()
     {
+        objectPooler = ObjectPooler.instance;
         board = new DropColor.DropColorState[boardSize, boardSize];
         dropPrefabs = dropPrefabs.OrderBy(prefab => prefab.GetComponent<Drop>().DropColorInfo).ToArray();
         GenerateGameBoard();
@@ -34,19 +37,18 @@ public class BoardGenerator : MonoBehaviour
             for (int j = 0; j < boardSize; j++)
             {
                 randomNum = Random.Range(0, 4);
-
-                CheckRandomStreaks(i, j, randomNum);
-                // CheckDropsInColumn(i, j, randomNum);
-
-                spawnPos = new Vector3(i * cellSize, 0f, j * cellSize );
-                GameObject obj = Instantiate(dropPrefabs[randomNum], spawnPos, Quaternion.identity);
-                obj.transform.parent = this.transform;
+                CheckSequants(i, j, randomNum);
+                spawnPos = new Vector3(i * cellSize, 0f, j * cellSize);
+                
+                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);        
+                obj.GetComponent<Drop>().PositionInfo = spawnPos;
+                obj.GetComponent<IPooledObject>().OnObjectSpawn();
                 board[i,j] = obj.GetComponent<Drop>().DropColorInfo;
             }
         }
     }
 
-    private void CheckRandomStreaks(int row, int column, int num)
+    private void CheckSequants(int row, int column, int num)
     {
         bool isSequentInRow;
         bool isSequentInColumn;
@@ -94,23 +96,6 @@ public class BoardGenerator : MonoBehaviour
             {
                 isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
             }
-        }
-
-        randomNum = num;
-    }
-
-    private void CheckDropsInColumn(int row, int column, int num)
-    {
-        if (column - 2 < 0 ) return;
-
-        DropColor.DropColorState twoUpperDrop = board[row, column - 2];
-        DropColor.DropColorState upperDrop = board[row, column - 1];
-        DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
-
-        while ((upperDrop == twoUpperDrop) && (currentDrop == upperDrop))
-        {
-            num = Random.Range(0, 4);
-            currentDrop = (DropColor.DropColorState)num;
         }
 
         randomNum = num;
