@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDrop
 {
-    // public void OnSwiped();
+    public void OnSwiped(Vector3 swipeDir);
 }

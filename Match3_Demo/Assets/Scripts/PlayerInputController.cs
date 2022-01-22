@@ -12,7 +12,7 @@ public class PlayerInputController : MonoBehaviour
 
     private Camera mainCam;
 
-    private Vector3 startPos, finalPos, movementDirection;
+    private Vector3 startPos, finalPos, swipeDirection;
 
     private Transform selectedDrop;
 
@@ -35,10 +35,10 @@ public class PlayerInputController : MonoBehaviour
     void Update()
     {
         // CheckTimer();
-        GetMovementDirectionFromplayer();
+        GetSwipeDirectionFromPlayer();
     }
 
-    private void GetMovementDirectionFromplayer()
+    private void GetSwipeDirectionFromPlayer()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -50,52 +50,13 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
-                // Debug.Log(hit.transform.GetComponent<Drop>().PositionInfo);
             }
         }
-        /*
-        else if (Input.GetMouseButton(0))
-        {
-            finalPos = Input.mousePosition;
-            movementDirection = finalPos - startPos;
-
-            bool isExceededThreshold = movementDirection.magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
-
-            if (isExceededThreshold)
-            {
-                float xDif = finalPos.x - startPos.x;
-                float zDif = finalPos.y - startPos.y;
-                bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
-
-                if (isMovementOnX && xDif > 0)
-                {
-                    movementDirection = Vector3.right;
-                }
-                else if (isMovementOnX && xDif <= 0)
-                {
-                    movementDirection = Vector3.left;
-                }
-                else if (!isMovementOnX && zDif > 0)
-                {
-                    movementDirection = Vector3.forward;
-                }
-                else if (!isMovementOnX && zDif <= 0)
-                {
-                    movementDirection = Vector3.back;
-                }
-            }
-            else
-            {
-                movementDirection = Vector3.zero;
-            }
-        }
-        */
         else if (Input.GetMouseButtonUp(0))
         {
             if (selectedDrop == null) return;
 
             finalPos = Input.mousePosition;
-            // movementDirection = finalPos - startPos;
             bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
 
             if (isExceededThreshold)
@@ -104,27 +65,28 @@ public class PlayerInputController : MonoBehaviour
                 float zDif = finalPos.y - startPos.y;
                 bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
 
+                // todo refactor
                 if (isMovementOnX && xDif > 0)
                 {
-                    movementDirection = Vector3.right;
+                    swipeDirection = Vector3.right;
                 }
                 else if (isMovementOnX && xDif <= 0)
                 {
-                    movementDirection = Vector3.left;
+                    swipeDirection = Vector3.left;
                 }
                 else if (!isMovementOnX && zDif > 0)
                 {
-                    movementDirection = Vector3.forward;
+                    swipeDirection = Vector3.forward;
                 }
                 else if (!isMovementOnX && zDif <= 0)
                 {
-                    movementDirection = Vector3.back;
+                    swipeDirection = Vector3.back;
                 }
             }
 
-            selectedDrop.GetComponent<Drop>().OnSwiped(movementDirection);
+            selectedDrop.GetComponent<Drop>().OnSwiped(swipeDirection);
             EventManager.OnPlayerSwiped?.Invoke();
-            movementDirection = Vector3.zero;
+            swipeDirection = Vector3.zero;
             selectedDrop = null;
         }
     }
@@ -142,5 +104,4 @@ public class PlayerInputController : MonoBehaviour
         }
     }
     */
-
 }

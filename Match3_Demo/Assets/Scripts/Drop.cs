@@ -24,7 +24,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         // EventManager.OnPlayerSwiped.RemoveListener(CheckPosition);
     }
 
-    private void Awake()
+    private void Start()
     {
         board = Board.instance;
     }
@@ -53,8 +53,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
             }
 
             board.boardArray[rowPosition - 1, columnPosition].GetComponent<Drop>().ChangePlace(Vector3.back, 1, 0);
-            // board.boardArray[rowPosition, columnPosition] = board.boardArray[rowPosition - 1, columnPosition];
-            // board.boardArray[rowPosition - 1, columnPosition] = this.gameObject;
             this.transform.position += movementDir * board.CellSize;            
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition - 1, columnPosition]) = (board.boardArray[rowPosition - 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x--;
@@ -68,8 +66,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
             }
 
             board.boardArray[rowPosition + 1, columnPosition].GetComponent<Drop>().ChangePlace(Vector3.forward, -1, 0);
-            // board.boardArray[rowPosition, columnPosition] = board.boardArray[rowPosition + 1, columnPosition];
-            // board.boardArray[rowPosition + 1, columnPosition] = this.gameObject;
             this.transform.position += movementDir * board.CellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x++;
@@ -83,8 +79,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
             }
 
             board.boardArray[rowPosition, columnPosition + 1].GetComponent<Drop>().ChangePlace(Vector3.left, 0, -1);
-            // board.boardArray[rowPosition, columnPosition] = board.boardArray[rowPosition, columnPosition + 1];
-            // board.boardArray[rowPosition, columnPosition + 1] = this.gameObject;
             this.transform.position += movementDir * board.CellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition + 1]) = (board.boardArray[rowPosition, columnPosition + 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z++;
@@ -98,8 +92,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
             }
 
             board.boardArray[rowPosition, columnPosition - 1].GetComponent<Drop>().ChangePlace(Vector3.right, 0, 1);
-            // board.boardArray[rowPosition, columnPosition] = board.boardArray[rowPosition, columnPosition - 1];
-            // board.boardArray[rowPosition, columnPosition - 1] = this.gameObject;
             this.transform.position += movementDir * board.CellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition - 1]) = (board.boardArray[rowPosition, columnPosition - 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z--;

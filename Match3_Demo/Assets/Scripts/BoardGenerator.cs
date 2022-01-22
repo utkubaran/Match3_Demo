@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] dropPrefabs;
-
     private Board board;
     
     private ObjectPooler objectPooler;
@@ -24,7 +21,6 @@ public class BoardGenerator : MonoBehaviour
         objectPooler = ObjectPooler.instance;
         boardSize = board.BoardSize;
         cellSize = board.CellSize;
-        dropPrefabs = dropPrefabs.OrderBy(prefab => prefab.GetComponent<Drop>().DropColorInfo).ToArray();
         GenerateGameBoard();
     }
 
@@ -90,7 +86,7 @@ public class BoardGenerator : MonoBehaviour
             {
                 isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
             } 
-            else if(isSequentInRow)
+            else if (isSequentInRow)
             {
                 isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
             }

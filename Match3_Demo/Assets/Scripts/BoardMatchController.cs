@@ -29,6 +29,8 @@ public class BoardMatchController : MonoBehaviour
         board = Board.instance;
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
+        CheckMatchInRows();
+        CheckMatchInColumns();
     }
 
     private void CheckMatchInRows()
@@ -38,12 +40,40 @@ public class BoardMatchController : MonoBehaviour
             for (int column = 2; column < boardSize; column++)
             {
                 DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
-                DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;          
+                DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
 
-                if ((twoPreviousDrop == currentDrop) && (previousDrop == currentDrop) )
+                if ((twoPreviousDrop == currentDrop) && (previousDrop == currentDrop))
                 {
-                    Debug.Log("It's a match!");
+                    if (column + 1 < boardSize)
+                    {
+                        DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
+
+                        if (followingDrop == currentDrop)
+                        {
+                            if (column + 2 < boardSize)
+                            {
+                                DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
+
+                                if (twoFollowingDrop == currentDrop)
+                                {
+                                    Debug.Log("It's a 5 row match!");
+                                }
+                                else
+                                {
+                                    Debug.Log("It's a 4 row match!");
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("It's a 4 row match!");
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("It's a 3 row match!");
+                        }
+                    }
                 }
             }
         }
@@ -59,9 +89,41 @@ public class BoardMatchController : MonoBehaviour
                 DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
 
-                if ((twoUpperDrop == currentDrop) && (upperDrop == currentDrop) )
+                if ((twoUpperDrop == currentDrop) && (upperDrop == currentDrop))
                 {
-                    Debug.Log("It's a match!");
+                    if (row + 1 < boardSize)
+                    {
+                        DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
+
+                        if (lowerDrop == currentDrop)
+                        {
+                            if (row + 2 < boardSize)
+                            {
+                                DropColor.DropColorState twoFollowingDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
+
+                                if (twoFollowingDrop == currentDrop)
+                                {
+                                    Debug.Log("It's a 5 column match!");
+                                }
+                                else
+                                {
+                                    Debug.Log("It's a 4 column match!");
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("It's a 4 column match!");
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("It's a 3 column match!");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("It's a 3 column match!");
+                    }
                 }
             }
         }
