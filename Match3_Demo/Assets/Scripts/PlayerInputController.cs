@@ -7,27 +7,34 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+    [SerializeField]
+    private float movetimer;
+
     private Camera mainCam;
 
     private Vector3 startPos, finalPos, movementDirection;
 
     private Transform selectedDrop;
 
-    private float dropMovementSpeed = 1f;
+    private float timeRemaining;
 
-    private bool isPlaying;
+    private bool isPlaying, isMoveEnabled;
 
     private void Awake()
     {
         mainCam = Camera.main;
     }
+
     void Start()
     {
         isPlaying = true;       // todo refactor after events are enabled
+        timeRemaining = movetimer;
+        isMoveEnabled = true;
     }
 
     void Update()
     {
+        // CheckTimer();
         GetMovementDirectionFromplayer();
     }
 
@@ -46,6 +53,7 @@ public class PlayerInputController : MonoBehaviour
                 // Debug.Log(hit.transform.GetComponent<Drop>().PositionInfo);
             }
         }
+        /*
         else if (Input.GetMouseButton(0))
         {
             finalPos = Input.mousePosition;
@@ -81,15 +89,82 @@ public class PlayerInputController : MonoBehaviour
                 movementDirection = Vector3.zero;
             }
         }
+        */
         else if (Input.GetMouseButtonUp(0))
         {
-            if (selectedDrop == null || movementDirection.magnitude <= 0.25f) return;
+            if (selectedDrop == null) return;
+
+            finalPos = Input.mousePosition;
+            // movementDirection = finalPos - startPos;
+            // bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.5f ? true : false;        // todo refactor
+
+            /*
+            if (isExceededThreshold)
+            {
+                float xDif = finalPos.x - startPos.x;
+                float zDif = finalPos.y - startPos.y;
+                bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
+
+                if (isMovementOnX && xDif > 0)
+                {
+                    movementDirection = Vector3.right;
+                }
+                else if (isMovementOnX && xDif <= 0)
+                {
+                    movementDirection = Vector3.left;
+                }
+                else if (!isMovementOnX && zDif > 0)
+                {
+                    movementDirection = Vector3.forward;
+                }
+                else if (!isMovementOnX && zDif <= 0)
+                {
+                    movementDirection = Vector3.back;
+                }
+            }
+            */
+
+            float xDif = finalPos.x - startPos.x;
+            float zDif = finalPos.y - startPos.y;
+            bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
+
+            if (isMovementOnX && xDif > Mathf.Epsilon)
+            {
+                movementDirection = Vector3.right;
+            }
+            else if (isMovementOnX && xDif < Mathf.Epsilon)
+            {
+                movementDirection = Vector3.left;
+            }
+            else if (!isMovementOnX && zDif > Mathf.Epsilon)
+            {
+                movementDirection = Vector3.forward;
+            }
+            else if (!isMovementOnX && zDif < Mathf.Epsilon)
+            {
+                movementDirection = Vector3.back;
+            }
 
             selectedDrop.GetComponent<Drop>().OnSwiped(movementDirection);
+            Debug.Log(movementDirection);
             EventManager.OnPlayerSwiped?.Invoke();
             movementDirection = Vector3.zero;
             selectedDrop = null;
         }
     }
+
+    /*
+    private void CheckTimer()
+    {
+        timeRemaining -= Time.deltaTime;
+
+        if (timeRemaining <= 0)
+        {
+            isMoveEnabled = true;
+            timeRemaining = movetimer;
+            Debug.Log("You can play your move!");
+        }
+    }
+    */
 
 }

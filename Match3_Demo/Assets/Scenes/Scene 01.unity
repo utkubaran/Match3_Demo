@@ -169,6 +169,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 960
+  movetimer: 1
 --- !u!1 &518316154
 GameObject:
   m_ObjectHideFlags: 0

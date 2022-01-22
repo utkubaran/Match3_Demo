@@ -35,13 +35,13 @@ public class BoardGenerator : MonoBehaviour
             for (int j = 0; j < boardSize; j++)
             {
                 randomNum = Random.Range(0, 4);
-                CheckSequants(i, j, randomNum);
+                CheckSequants(j, i, randomNum);
                 spawnPos = new Vector3(i * cellSize, 0f, j * -cellSize);
                 
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
-                obj.GetComponent<Drop>().PositionInfo = new Vector3Int(i, 0, j);
+                obj.GetComponent<Drop>().PositionInfo = new Vector3Int(j, 0, i);
                 obj.GetComponent<IPooledObject>().OnObjectSpawn();
-                board.boardArray[i,j] = obj;
+                board.boardArray[j, i] = obj;
             }
         }
     }
