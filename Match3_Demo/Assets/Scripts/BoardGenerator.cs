@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class BoardGenerator : MonoBehaviour
     void Start()
     {
         board = new DropColor.DropColorState[boardSize, boardSize];
+        dropPrefabs = dropPrefabs.OrderBy(prefab => prefab.GetComponent<Drop>().DropColorInfo).ToArray();
         GenerateGameBoard();
     }
 
@@ -33,7 +35,7 @@ public class BoardGenerator : MonoBehaviour
             {
                 randomNum = Random.Range(0, 4);
 
-                CheckDropsInRow(i, j, randomNum);
+                CheckRandomStreaks(i, j, randomNum);
                 // CheckDropsInColumn(i, j, randomNum);
 
                 spawnPos = new Vector3(i * cellSize, 0f, j * cellSize );
@@ -44,19 +46,54 @@ public class BoardGenerator : MonoBehaviour
         }
     }
 
-    private void CheckDropsInRow(int row, int column, int num)
+    private void CheckRandomStreaks(int row, int column, int num)
     {
-        if (row - 2 < 0 ) return;
+        bool isSequentInRow;
+        bool isSequentInColumn;
 
-        DropColor.DropColorState twoPreviousDrop = board[row - 2, column];
-        DropColor.DropColorState previosDrop = board[row - 1, column];
+        DropColor.DropColorState twoPreviousDrop = 0;
+        DropColor.DropColorState previousDrop = 0;
+
+        DropColor.DropColorState twoUpperDrop = 0;
+        DropColor.DropColorState upperDrop = 0;
+
         DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
 
-        while((previosDrop == twoPreviousDrop) && (currentDrop == previosDrop))
+        if (row - 2 < 0 )
         {
-            Debug.Log("I worked at " + row + " " + column);
+            isSequentInRow = false;
+        }
+        else
+        {
+            twoPreviousDrop = board[row - 2, column];
+            previousDrop = board[row - 1, column];
+            isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
+        }
+
+        if (column - 2 < 0)
+        {
+            isSequentInColumn = false;
+        }
+        else
+        {
+            twoUpperDrop = board[row, column - 2];
+            upperDrop = board[row, column - 1];
+            isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
+        }
+
+        while (isSequentInRow || isSequentInColumn)
+        {
             num = Random.Range(0, 4);
             currentDrop = (DropColor.DropColorState)num;
+
+            if (isSequentInColumn)
+            {
+                isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
+            } 
+            else if(isSequentInRow)
+            {
+                isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
+            }
         }
 
         randomNum = num;
@@ -72,10 +109,8 @@ public class BoardGenerator : MonoBehaviour
 
         while ((upperDrop == twoUpperDrop) && (currentDrop == upperDrop))
         {
-            Debug.Log(twoUpperDrop + " " + upperDrop + " " +  currentDrop);
             num = Random.Range(0, 4);
             currentDrop = (DropColor.DropColorState)num;
-            Debug.Log(currentDrop);
         }
 
         randomNum = num;
