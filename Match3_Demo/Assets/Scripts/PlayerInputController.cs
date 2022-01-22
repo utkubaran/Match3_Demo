@@ -29,24 +29,6 @@ public class PlayerInputController : MonoBehaviour
     void Update()
     {
         GetMovementDirectionFromplayer();
-        // GetInputFromPlayer();
-    }
-
-    private void GetInputFromPlayer()
-    {
-        if (!isPlaying) return;
-
-        if (Input.GetMouseButton(0))
-        {
-            var ray = mainCam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, 100f, layerMask))
-            {
-                Debug.Log(movementDirection);
-                hit.transform.position += movementDirection.normalized * dropMovementSpeed * Time.deltaTime;
-            }
-        }
     }
 
     private void GetMovementDirectionFromplayer()
@@ -61,6 +43,7 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
+                // Debug.Log(hit.transform.GetComponent<Drop>().PositionInfo);
             }
         }
         else if (Input.GetMouseButton(0))
@@ -68,12 +51,10 @@ public class PlayerInputController : MonoBehaviour
             finalPos = Input.mousePosition;
             movementDirection = finalPos - startPos;
 
-            Debug.Log(movementDirection);
+            bool isExceededThreshold = movementDirection.magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
 
-            // bool isExceededThreshold = true ? 
-
-            if (movementDirection.magnitude >= 0.25f)
-                {
+            if (isExceededThreshold)
+            {
                 float xDif = finalPos.x - startPos.x;
                 float zDif = finalPos.y - startPos.y;
                 bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
@@ -89,12 +70,10 @@ public class PlayerInputController : MonoBehaviour
                 else if (!isMovementOnX && zDif > 0)
                 {
                     movementDirection = Vector3.forward;
-                    Debug.Log(movementDirection);
                 }
                 else if (!isMovementOnX && zDif <= 0)
                 {
                     movementDirection = Vector3.back;
-                    Debug.Log(movementDirection);
                 }
             }
             else

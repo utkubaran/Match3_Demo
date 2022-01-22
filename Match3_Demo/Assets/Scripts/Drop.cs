@@ -41,13 +41,18 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     public void OnSwiped(Vector3 movementDir)
     {
-        this.transform.position += movementDir * board.CellSize;
-
         int xPos = positionInfo.x;
         int zPos = positionInfo.z;
 
         if (movementDir == Vector3.right)
         {
+            if (xPos+1 >= board.BoardSize)
+            {
+                Debug.Log("Can't Move!");
+                return;
+            }
+
+            this.transform.position += movementDir * board.CellSize;
             board.boardArray[xPos+1, zPos].GetComponent<Drop>().ChangePlace(Vector3.left);
             // board.boardArray[xPos, zPos] = board.boardArray[xPos+1, zPos];
             // board.boardArray[xPos+1, zPos] = this.gameObject;
@@ -56,6 +61,13 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         }
         else if (movementDir == Vector3.left)
         {
+            if (xPos-1 < 0)
+            {
+                Debug.Log("Can't Move!");
+                return;
+            }
+
+            this.transform.position += movementDir * board.CellSize;
             board.boardArray[xPos-1, zPos].GetComponent<Drop>().ChangePlace(Vector3.right);
             // board.boardArray[xPos, zPos] = board.boardArray[xPos-1, zPos];
             // board.boardArray[xPos-1, zPos] = this.gameObject;
@@ -64,18 +76,32 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         }
         else if (movementDir == Vector3.forward)
         {
+            if (zPos-1 < 0)
+            {
+                Debug.Log("Can't Move!");
+                return;
+            }
+
+            this.transform.position += movementDir * board.CellSize;
             board.boardArray[xPos, zPos-1].GetComponent<Drop>().ChangePlace(Vector3.back);
-            board.boardArray[xPos, zPos] = board.boardArray[xPos, zPos-1];
-            board.boardArray[xPos, zPos-1] = this.gameObject;
-            // (board.boardArray[xPos, zPos], board.boardArray[xPos, zPos-1]) = (board.boardArray[xPos, zPos-1], board.boardArray[xPos, zPos]);
+            // board.boardArray[xPos, zPos] = board.boardArray[xPos, zPos-1];
+            // board.boardArray[xPos, zPos-1] = this.gameObject;
+            (board.boardArray[xPos, zPos], board.boardArray[xPos, zPos-1]) = (board.boardArray[xPos, zPos-1], board.boardArray[xPos, zPos]);
             positionInfo.z--;
         }
         else if (movementDir == Vector3.back)
         {
+            if (zPos+1 >= board.BoardSize)
+            {
+                Debug.Log("Can't Move!");
+                return;
+            }
+
+            this.transform.position += movementDir * board.CellSize;
             board.boardArray[xPos, zPos+1].GetComponent<Drop>().ChangePlace(Vector3.forward);
-            board.boardArray[xPos, zPos] = board.boardArray[xPos, zPos+1];
-            board.boardArray[xPos, zPos+1] = this.gameObject;
-            // (board.boardArray[xPos, zPos], board.boardArray[xPos, zPos+1]) = (board.boardArray[xPos, zPos+1], board.boardArray[xPos, zPos]);
+            // board.boardArray[xPos, zPos] = board.boardArray[xPos, zPos+1];
+            // board.boardArray[xPos, zPos+1] = this.gameObject;
+            (board.boardArray[xPos, zPos], board.boardArray[xPos, zPos+1]) = (board.boardArray[xPos, zPos+1], board.boardArray[xPos, zPos]);
             positionInfo.z++;
         }
     }
