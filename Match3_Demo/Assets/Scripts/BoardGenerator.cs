@@ -8,24 +8,22 @@ public class BoardGenerator : MonoBehaviour
     [SerializeField]
     private GameObject[] dropPrefabs;
 
-    [SerializeField]
-    private int boardSize;
-
-    [SerializeField]
-    private float cellSize;
-
+    private Board board;
+    
     private ObjectPooler objectPooler;
 
-    private int randomNum;
+    private int randomNum, boardSize;
+
+    private float cellSize;
 
     private Vector3 spawnPos;
-
-    private DropColor.DropColorState[,] board;
     
     void Start()
     {
+        board = Board.instance;
         objectPooler = ObjectPooler.instance;
-        board = new DropColor.DropColorState[boardSize, boardSize];
+        boardSize = board.BoardSize;
+        cellSize = board.CellSize;
         dropPrefabs = dropPrefabs.OrderBy(prefab => prefab.GetComponent<Drop>().DropColorInfo).ToArray();
         GenerateGameBoard();
     }
@@ -38,12 +36,12 @@ public class BoardGenerator : MonoBehaviour
             {
                 randomNum = Random.Range(0, 4);
                 CheckSequants(i, j, randomNum);
-                spawnPos = new Vector3(i * cellSize, 0f, j * cellSize);
+                spawnPos = new Vector3(i * cellSize, 0f, j * -cellSize);
                 
-                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);        
-                obj.GetComponent<Drop>().PositionInfo = spawnPos;
+                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
+                obj.GetComponent<Drop>().PositionInfo = new Vector3Int(i, 0, j);
                 obj.GetComponent<IPooledObject>().OnObjectSpawn();
-                board[i,j] = obj.GetComponent<Drop>().DropColorInfo;
+                board.boardArray[i,j] = obj;
             }
         }
     }
@@ -67,8 +65,8 @@ public class BoardGenerator : MonoBehaviour
         }
         else
         {
-            twoPreviousDrop = board[row - 2, column];
-            previousDrop = board[row - 1, column];
+            twoPreviousDrop = board.boardArray[row - 2, column].GetComponent<Drop>().DropColorInfo;
+            previousDrop = board.boardArray[row - 1, column].GetComponent<Drop>().DropColorInfo;
             isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
         }
 
@@ -78,8 +76,8 @@ public class BoardGenerator : MonoBehaviour
         }
         else
         {
-            twoUpperDrop = board[row, column - 2];
-            upperDrop = board[row, column - 1];
+            twoUpperDrop = board.boardArray[row, column - 2].GetComponent<Drop>().DropColorInfo;
+            upperDrop = board.boardArray[row, column - 1].GetComponent<Drop>().DropColorInfo;
             isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
         }
 

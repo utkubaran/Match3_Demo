@@ -61,40 +61,56 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
-                Debug.Log(hit.transform.name);
             }
         }
         else if (Input.GetMouseButton(0))
         {
             finalPos = Input.mousePosition;
-            // movementDirection = new Vector3(finalPos.x - startPos.x, 0f, finalPos.y - startPos.y);
-            float xDif = finalPos.x - startPos.x;
-            float zDif = finalPos.y - startPos.y;
-            bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
+            movementDirection = finalPos - startPos;
 
-            if (isMovementOnX && xDif > 0)
-            {
-                movementDirection = Vector3.right;
+            Debug.Log(movementDirection);
+
+            // bool isExceededThreshold = true ? 
+
+            if (movementDirection.magnitude >= 0.25f)
+                {
+                float xDif = finalPos.x - startPos.x;
+                float zDif = finalPos.y - startPos.y;
+                bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
+
+                if (isMovementOnX && xDif > 0)
+                {
+                    movementDirection = Vector3.right;
+                }
+                else if (isMovementOnX && xDif <= 0)
+                {
+                    movementDirection = Vector3.left;
+                }
+                else if (!isMovementOnX && zDif > 0)
+                {
+                    movementDirection = Vector3.forward;
+                    Debug.Log(movementDirection);
+                }
+                else if (!isMovementOnX && zDif <= 0)
+                {
+                    movementDirection = Vector3.back;
+                    Debug.Log(movementDirection);
+                }
             }
-            else if (isMovementOnX && xDif <= 0)
+            else
             {
-                movementDirection = Vector3.left;
-            }
-            else if (!isMovementOnX && zDif > 0)
-            {
-                movementDirection = Vector3.forward;
-            }
-            else if (!isMovementOnX && zDif <= 0)
-            {
-                movementDirection = Vector3.back;
+                movementDirection = Vector3.zero;
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (selectedDrop == null) return;
+            if (selectedDrop == null || movementDirection.magnitude <= 0.25f) return;
+
             selectedDrop.GetComponent<Drop>().OnSwiped(movementDirection);
+            EventManager.OnPlayerSwiped?.Invoke();
             movementDirection = Vector3.zero;
             selectedDrop = null;
         }
     }
+
 }

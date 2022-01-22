@@ -340,7 +340,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103397299}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 6, y: 25, z: 5}
+  m_LocalPosition: {x: 5, y: 25, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -388,6 +388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1545204214}
+  - component: {fileID: 1545204216}
   - component: {fileID: 1545204215}
   m_Layer: 0
   m_Name: Game Board
@@ -427,6 +428,18 @@ MonoBehaviour:
   - {fileID: 4347470544222672310, guid: b4298fb844d3f024f834479443324a21, type: 3}
   - {fileID: 3117909361461325568, guid: 064c950780329ee46bb4e88720d0fea6, type: 3}
   - {fileID: 2955155892954498155, guid: e1930523b05ca024b8bb9860df166bf0, type: 3}
+--- !u!114 &1545204216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545204213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab54f855540383a499658f5dc54025cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   boardSize: 8
   cellSize: 1.5
 --- !u!1 &1613060903
