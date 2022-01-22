@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1795192111266768159}
   - component: {fileID: 1795192111266768156}
   - component: {fileID: 1795192111266768128}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Blue Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

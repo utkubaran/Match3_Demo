@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drop : MonoBehaviour, IPooledObject
+public class Drop : MonoBehaviour, IPooledObject, IDrop
 {
     [SerializeField]
     DropData dropData;
@@ -20,5 +20,11 @@ public class Drop : MonoBehaviour, IPooledObject
     public void OnObjectRespawn()
     {
         return;
+    }
+
+    public void OnSwiped(Vector3 movementDir)
+    {
+        Debug.Log("I worked!");
+        this.transform.position += movementDir;
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2955155892954498149}
   - component: {fileID: 2955155892954498154}
   - component: {fileID: 2955155892954498150}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Yellow Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

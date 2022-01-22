@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4347470544222672304}
   - component: {fileID: 4347470544222672311}
   - component: {fileID: 4347470544222672307}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Green Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
