@@ -14,19 +14,19 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     private Vector3Int positionInfo, previousPositionInfo;
     public Vector3Int PositionInfo { get { return positionInfo; } set { positionInfo = value; } }
 
-    private float cellSize;
+    private float cellSize, moveBackTime = 1f;
 
     private bool isMoved;
 
     private void OnEnable()
     {
-        // EventManager.OnNoMatch.AddListener(GoPreviousPosition);
+        EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
         // EventManager.OnPlayerSwiped.AddListener(CheckPosition);
     }
 
     private void OnDisable()
     {
-        // EventManager.OnNoMatch.RemoveListener(GoPreviousPosition);
+        EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
         // EventManager.OnPlayerSwiped.RemoveListener(CheckPosition);
     }
 
@@ -63,7 +63,8 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
             isMoved = true;
             board.boardArray[rowPosition - 1, columnPosition].GetComponent<Drop>().ChangePlace(Vector3.back, 1, 0);
-            this.transform.position += movementDir * cellSize;            
+            // this.transform.position = Vector3.Lerp(transform.position, transform.position + movementDir, 0.1f);
+            this.transform.position += movementDir * cellSize;         
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition - 1, columnPosition]) = (board.boardArray[rowPosition - 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x--;
         }
@@ -122,23 +123,11 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     private void GoPreviousPositionWithDelay()
     {
         if (isMoved) StartCoroutine(GoPreviousPosition());
-        // if (!isMoved) return;
-
-        /*
-        transform.position = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
-        // board.boardArray[previousPositionInfo.x, previousPositionInfo.z] = this.gameObject;
-        positionInfo = previousPositionInfo;
-        isMoved = false;
-        */
     }
 
     private IEnumerator GoPreviousPosition()
     {
-        Debug.Log("works");
-        yield return new WaitForSeconds(2f);
-
-        // Debug.Log("works");
-        // Debug.Log(previousPositionInfo + " " + positionInfo);
+        yield return new WaitForSeconds(moveBackTime);
 
         transform.position = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
         board.boardArray[previousPositionInfo.x, previousPositionInfo.z] = this.gameObject;

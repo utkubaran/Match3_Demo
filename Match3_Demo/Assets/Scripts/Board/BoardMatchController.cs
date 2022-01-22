@@ -37,8 +37,8 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        // CheckMatchInRows();
-        // CheckMatchInColumns();
+        CheckMatchesInRows();
+        CheckMatchesInColumns();
     }
 
     private void CheckMatchesInRows()
