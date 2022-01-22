@@ -18,7 +18,7 @@ public class PlayerInputController : MonoBehaviour
 
     private float timeRemaining;
 
-    private bool isPlaying, isMoveEnabled;
+    private bool isPlaying;
 
     private void Awake()
     {
@@ -29,7 +29,6 @@ public class PlayerInputController : MonoBehaviour
     {
         isPlaying = true;       // todo refactor after events are enabled
         timeRemaining = movetimer;
-        isMoveEnabled = true;
     }
 
     void Update()
@@ -40,6 +39,8 @@ public class PlayerInputController : MonoBehaviour
 
     private void GetSwipeDirectionFromPlayer()
     {
+        if (!isPlaying) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
@@ -61,27 +62,7 @@ public class PlayerInputController : MonoBehaviour
 
             if (isExceededThreshold)
             {
-                float xDif = finalPos.x - startPos.x;
-                float zDif = finalPos.y - startPos.y;
-                bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
-
-                // todo refactor
-                if (isMovementOnX && xDif > 0)
-                {
-                    swipeDirection = Vector3.right;
-                }
-                else if (isMovementOnX && xDif <= 0)
-                {
-                    swipeDirection = Vector3.left;
-                }
-                else if (!isMovementOnX && zDif > 0)
-                {
-                    swipeDirection = Vector3.forward;
-                }
-                else if (!isMovementOnX && zDif <= 0)
-                {
-                    swipeDirection = Vector3.back;
-                }
+                swipeDirection = GetSwipeDirection(finalPos - startPos);
             }
 
             selectedDrop.GetComponent<Drop>().OnSwiped(swipeDirection);
@@ -91,17 +72,32 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    /*
-    private void CheckTimer()
+    private Vector3 GetSwipeDirection(Vector3 inputDir)
     {
-        timeRemaining -= Time.deltaTime;
+        float xDif = inputDir.x;
+        float zDif = inputDir.y;
+        bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
 
-        if (timeRemaining <= 0)
+        // todo refactor
+        if (isMovementOnX && xDif > 0)
         {
-            isMoveEnabled = true;
-            timeRemaining = movetimer;
-            Debug.Log("You can play your move!");
+            return Vector3.right;
+        }
+        else if (isMovementOnX && xDif <= 0)
+        {
+            return  Vector3.left;
+        }
+        else if (!isMovementOnX && zDif > 0)
+        {
+            return Vector3.forward;
+        }
+        else if (!isMovementOnX && zDif <= 0)
+        {
+            return Vector3.back;
+        }
+        else
+        {
+            return Vector3.zero;
         }
     }
-    */
 }

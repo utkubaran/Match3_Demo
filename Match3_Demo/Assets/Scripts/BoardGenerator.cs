@@ -81,15 +81,21 @@ public class BoardGenerator : MonoBehaviour
         {
             num = Random.Range(0, 4);
             currentDrop = (DropColor.DropColorState)num;
+            isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
+            isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
 
+            /*
             if (isSequentInColumn)
             {
                 isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
+                isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
             } 
             else if (isSequentInRow)
             {
+                isSequentInColumn = (currentDrop == twoUpperDrop) && (currentDrop == upperDrop);
                 isSequentInRow = (currentDrop == twoPreviousDrop) && (currentDrop == previousDrop);
             }
+            */
         }
 
         randomNum = num;
