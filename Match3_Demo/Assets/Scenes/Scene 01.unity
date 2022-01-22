@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 1545204214}
   - component: {fileID: 1545204216}
   - component: {fileID: 1545204215}
+  - component: {fileID: 1545204217}
   m_Layer: 0
   m_Name: Game Board
   m_TagString: Untagged
@@ -443,6 +444,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSize: 8
   cellSize: 1.5
+--- !u!114 &1545204217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545204213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ed49a300b300342bb4a3493915b1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1613060903
 GameObject:
   m_ObjectHideFlags: 0

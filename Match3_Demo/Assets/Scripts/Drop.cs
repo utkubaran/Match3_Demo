@@ -112,34 +112,4 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         positionInfo.z += columnChange;
         this.transform.position += movementDir * board.CellSize;
     }
-
-    private void CheckPosition()
-    {
-        bool isMoved = board.boardArray[positionInfo.x, positionInfo.z] == this.gameObject;
-
-        if (!isMoved) return;
-        Debug.Log("I moved : " + transform.name);
-
-        bool isUp = board.boardArray[positionInfo.x, positionInfo.z + 1] == this.gameObject;
-        bool isDown = board.boardArray[positionInfo.x, positionInfo.z - 1] == this.gameObject;
-        bool isRight = board.boardArray[positionInfo.x + 1, positionInfo.z] == this.gameObject;
-        bool isLeft = board.boardArray[positionInfo.x - 1, positionInfo.z] == this.gameObject;
-
-        if (isUp)
-        {
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z + board.CellSize);
-        }
-        else if (isDown)
-        {
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z - board.CellSize);
-        }
-        else if (isRight)
-        {
-            transform.position = new Vector3(transform.position.x + board.CellSize, 0f, transform.position.z);
-        }
-        else if (isLeft)
-        {
-            transform.position = new Vector3(transform.position.x - board.CellSize, 0f, transform.position.z);
-        }
-    }
 }
