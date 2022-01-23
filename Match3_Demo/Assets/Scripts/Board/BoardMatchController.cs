@@ -186,17 +186,27 @@ public class BoardMatchController : MonoBehaviour
 
         if (hasMatch)
         {
-            foreach (var drop in matchedDrops)
-            {
-                drop.gameObject.SetActive(false);
-            }
-
-            EventManager.OnMatch?.Invoke(matchedDrops);
+            StartCoroutine(DestroyMatchedDrops());
             hasMatch = false;
         }
         else
         {
             EventManager.OnNoMatch?.Invoke();
         }
+    }
+
+    private IEnumerator DestroyMatchedDrops()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        foreach (var drop in matchedDrops)
+        {
+            board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
+            // drop.gameObject.SetActive(false);
+        }
+        
+        EventManager.OnDropMatch?.Invoke();
+        EventManager.OnMatch?.Invoke(matchedDrops);
+        matchedDrops.Clear();
     }
 }

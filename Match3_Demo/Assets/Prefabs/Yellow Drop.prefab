@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2955155892954498149}
   - component: {fileID: 2955155892954498154}
   - component: {fileID: 2955155892954498150}
+  - component: {fileID: -8172441700014978873}
   m_Layer: 8
   m_Name: Yellow Drop
   m_TagString: Untagged
@@ -109,3 +110,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropData: {fileID: 11400000, guid: 013ed8a27395449478a47a8e75589567, type: 2}
+--- !u!114 &-8172441700014978873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2955155892954498155}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96debc5205ae87341933861eae2c75e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

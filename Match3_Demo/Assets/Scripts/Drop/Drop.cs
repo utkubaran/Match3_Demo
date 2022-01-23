@@ -55,7 +55,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
         if (movementDir == Vector3.forward)
         {
-            if (rowPosition - 1 < 0)
+            if (rowPosition - 1 < 0 || !board.boardArray[rowPosition - 1, columnPosition].gameObject.activeInHierarchy)
             {
                 Debug.Log("Can't Move!");
                 return;
@@ -70,7 +70,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         }
         else if (movementDir == Vector3.back)
         {
-            if (rowPosition + 1 >= board.BoardSize)
+            if (rowPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition + 1, columnPosition].gameObject.activeInHierarchy)
             {
                 Debug.Log("Can't Move!");
                 return;
@@ -84,7 +84,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         }
         else if (movementDir == Vector3.right)
         {
-            if (columnPosition + 1 >= board.BoardSize)
+            if (columnPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition, columnPosition + 1].gameObject.activeInHierarchy)
             {
                 Debug.Log("Can't Move!");
                 return;
@@ -98,7 +98,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         }
         else if (movementDir == Vector3.left)
         {
-            if (columnPosition - 1 < 0)
+            if (columnPosition - 1 < 0 || !board.boardArray[rowPosition, columnPosition - 1].gameObject.activeInHierarchy)
             {
                 Debug.Log("Can't Move!");
                 return;
