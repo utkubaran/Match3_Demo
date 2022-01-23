@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDrop
+public interface IMoveable
 {
-    // todo delete if no need
+    public void OnSwiped(Vector3 dir);
 }

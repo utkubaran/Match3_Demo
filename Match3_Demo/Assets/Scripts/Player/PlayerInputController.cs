@@ -13,7 +13,9 @@ public class PlayerInputController : MonoBehaviour
 
     private Transform selectedDrop;
 
-    private bool isPlaying;
+    private float timeRemaining, moveTimer = 2f;
+
+    private bool isPlaying, isMoved;
 
     private void Awake()
     {
@@ -23,6 +25,7 @@ public class PlayerInputController : MonoBehaviour
     void Start()
     {
         isPlaying = true;       // todo refactor after events are enabled
+        timeRemaining = moveTimer;
     }
 
     void Update()
@@ -44,6 +47,8 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
+                Debug.Log(hit.transform.GetComponent<Drop>().PositionInfo);
+                Debug.Log(hit.transform.GetComponent<DropFallController>().CheckBelowEmpty());
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -58,7 +63,7 @@ public class PlayerInputController : MonoBehaviour
                 swipeDirection = GetSwipeDirection(finalPos - startPos);
             }
 
-            selectedDrop.GetComponent<Drop>().OnSwiped(swipeDirection);
+            selectedDrop.GetComponent<DropMovementController>().OnSwiped(swipeDirection);
             EventManager.OnPlayerSwiped?.Invoke();
             swipeDirection = Vector3.zero;
             selectedDrop = null;
@@ -92,5 +97,16 @@ public class PlayerInputController : MonoBehaviour
         {
             return Vector3.zero;
         }
+    }
+
+    private bool Checktimer()       // todo remove if no need
+    {
+        timeRemaining -= Time.deltaTime;
+
+        if (timeRemaining > 0) return false;
+
+        timeRemaining = moveTimer;
+        Debug.Log("You can play your move!");
+        return true;
     }
 }

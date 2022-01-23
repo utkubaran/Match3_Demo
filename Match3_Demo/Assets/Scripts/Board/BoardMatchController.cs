@@ -21,6 +21,8 @@ public class BoardMatchController : MonoBehaviour
         EventManager.OnPlayerSwiped.AddListener(CheckMatchesInRows);
         EventManager.OnPlayerSwiped.AddListener(CheckMatchesInColumns);
         EventManager.OnPlayerSwiped.AddListener(HandleMatches);
+        EventManager.OnDropMatch.AddListener(CheckMatchesInRows);
+        EventManager.OnDropMatch.AddListener(CheckMatchesInColumns);
     }
 
     private void OnDisable()
@@ -29,6 +31,8 @@ public class BoardMatchController : MonoBehaviour
         EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInRows);
         EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInColumns);
         EventManager.OnPlayerSwiped.RemoveListener(HandleMatches);
+        EventManager.OnDropMatch.RemoveListener(CheckMatchesInRows);
+        EventManager.OnDropMatch.RemoveListener(CheckMatchesInColumns);
     }
 
     void Start()
@@ -37,8 +41,8 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        CheckMatchesInRows();
-        CheckMatchesInColumns();
+        // CheckMatchesInRows();
+        // CheckMatchesInColumns();
     }
 
     private void CheckMatchesInRows()
@@ -92,14 +96,6 @@ public class BoardMatchController : MonoBehaviour
                                 // Debug.Log("It's a 4 match in the same row!");
                             }
                         }
-                        else
-                        {
-                            Debug.Log("It's a 3 match in the same row!");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("It's a 3 match in the same row!");
                     }
                 }
 
@@ -165,14 +161,6 @@ public class BoardMatchController : MonoBehaviour
                                 // Debug.Log("It's a 4 match in the same column!");
                             }
                         }
-                        else
-                        {
-                            Debug.Log("It's a 3 match in the same column!");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("It's a 3 match in the same column!");
                     }
                 }
             }

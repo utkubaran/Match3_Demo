@@ -6,15 +6,17 @@ public class DropFallController : MonoBehaviour
 {
     private Board board;
 
+    private Drop drop;
+
     private int boardSize;
 
     private float cellSize;
 
-    private Vector3Int positionInfo;
-
-    private Vector3Int previousPositionInfo;
+    private Vector3Int positionInfo, previousPositionInfo;
 
     private bool isBelowEmpty;
+
+    private float controlTimer = 0.05f;
 
     private void OnEnable()
     {
@@ -25,18 +27,23 @@ public class DropFallController : MonoBehaviour
         EventManager.OnDropMatch.RemoveListener(CheckBelow);
     }
 
+    private void Awake()
+    {
+        drop = GetComponent<Drop>();
+    }
+
     void Start()
     {
         board = Board.instance;
         boardSize = board.BoardSize;
         cellSize = board.CellSize;
-        positionInfo = GetComponent<Drop>().PositionInfo;
+        positionInfo = drop.PositionInfo;
         isBelowEmpty = false;
     }
 
     private void Update()
     {
-        CheckBelow();
+        // CheckBelow();
 
         /*
         if (Input.GetKeyDown(KeyCode.Space))
@@ -46,16 +53,49 @@ public class DropFallController : MonoBehaviour
         */        
     }
 
+    public bool CheckBelowEmpty()
+    {
+        return !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
+    }
+
+    private IEnumerator CheckBelowWithDelay()
+    {
+        float waitTime = positionInfo.x * controlTimer;
+
+        yield return new WaitForSeconds(waitTime);
+
+        positionInfo = drop.PositionInfo;
+
+        if (positionInfo.x + 1 < boardSize)
+        {
+            isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
+
+            while (isBelowEmpty && positionInfo.x + 1 < boardSize)
+            {
+                MoveDown();
+            }
+        }
+    }
+
     private void CheckBelow()
     {
+        positionInfo = drop.PositionInfo;
+
         if (positionInfo.x + 1 >= boardSize) return;
 
         isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
 
-        while (isBelowEmpty && positionInfo.x + 1 < boardSize)
+        if (isBelowEmpty)
         {
             MoveDown();
         }
+
+        /*
+        while (isBelowEmpty && positionInfo.x < boardSize - 1)
+        {
+            MoveDown();
+        }
+        */
 
     }
 
@@ -66,7 +106,13 @@ public class DropFallController : MonoBehaviour
 
         transform.position += Vector3.back * cellSize;
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
-        isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
+        // isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
+        board.boardArray[rowPosition + 1, columnPosition] = this.gameObject;
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
+        drop.PositionInfo = positionInfo;
+
+        // if (rowPosition - 1 < 0) return;
+
+        // board.boardArray[rowPosition - 1, columnPosition].gameObject.GetComponent<DropFallController>().MoveDown();
     }
 }

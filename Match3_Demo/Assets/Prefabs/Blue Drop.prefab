@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1795192111266768159}
   - component: {fileID: 1795192111266768156}
   - component: {fileID: 1795192111266768128}
+  - component: {fileID: -4438385066415389282}
   - component: {fileID: 7314506148305056152}
   m_Layer: 7
   m_Name: Blue Drop
@@ -110,6 +111,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropData: {fileID: 11400000, guid: 4234c6b3ace9c9745b677f4dc0d52e67, type: 2}
+--- !u!114 &-4438385066415389282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795192111266768157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b40e947130f7b2f45935a2dd96bc49c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7314506148305056152
 MonoBehaviour:
   m_ObjectHideFlags: 0

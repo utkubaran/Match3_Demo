@@ -20,12 +20,13 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     private void OnEnable()
     {
-        EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
+        // EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
     }
 
     private void OnDisable()
     {
-        EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
+        positionInfo = Vector3Int.zero;
+        // EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
     }
 
     private void Start()
@@ -46,6 +47,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         return;
     }
 
+    /*
     public void OnSwiped(Vector3 movementDir)
     {
         int rowPosition = positionInfo.x;
@@ -132,4 +134,5 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         positionInfo = previousPositionInfo;
         isMoved = false;
     }
+    */
 }
