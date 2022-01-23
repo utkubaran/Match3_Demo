@@ -21,13 +21,11 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     private void OnEnable()
     {
         EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
-        // EventManager.OnPlayerSwiped.AddListener(CheckPosition);
     }
 
     private void OnDisable()
     {
         EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
-        // EventManager.OnPlayerSwiped.RemoveListener(CheckPosition);
     }
 
     private void Start()

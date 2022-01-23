@@ -197,7 +197,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator DestroyMatchedDrops()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         
         foreach (var drop in matchedDrops)
         {
