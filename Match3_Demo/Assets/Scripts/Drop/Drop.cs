@@ -25,7 +25,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     private void OnDisable()
     {
-        positionInfo = Vector3Int.zero;
         // EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
     }
 

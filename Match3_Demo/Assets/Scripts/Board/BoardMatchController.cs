@@ -41,8 +41,47 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        // CheckMatchesInRows();
-        // CheckMatchesInColumns();
+        InvokeRepeating("CheckMatchesInRows", 1f, 1f);
+        InvokeRepeating("CheckMatchesInColumns", 1f, 1f);
+        CheckMatchesInRows();
+        CheckMatchesInColumns();
+    }
+
+    private void Update()
+    {
+        boardArr = board.boardArray;
+    }
+
+    private bool CheckActivesInRows(int row, int column)
+    {
+        bool isTwoPreviousInScene = boardArr[row, column - 2].activeInHierarchy;
+        bool isPreviousInScene = boardArr[row, column - 1].activeInHierarchy;
+        bool isInScene = boardArr[row, column].activeInHierarchy;
+
+        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool CheckActivesInColumns(int row, int column)
+    {
+        bool isTwoPreviousInScene = boardArr[row - 2, column].activeInHierarchy;
+        bool isPreviousInScene = boardArr[row - 1, column].activeInHierarchy;
+        bool isInScene = boardArr[row, column].activeInHierarchy;
+
+        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     private void CheckMatchesInRows()
@@ -51,6 +90,14 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int column = 2; column < boardSize; column++)
             {
+                // if (!CheckActivesInRows(row, column)) return;
+
+                // bool isTwoPreviousInScene = boardArr[row - 2, column].activeInHierarchy;
+                // bool isPreviousInScene = boardArr[row - 1, column].activeInHierarchy;
+                // bool isCurrentInScene = boardArr[row, column].activeInHierarchy;
+
+                // if (!isTwoPreviousInScene || !isPreviousInScene || isCurrentInScene) continue;
+
                 DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
                 DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
@@ -62,49 +109,33 @@ public class BoardMatchController : MonoBehaviour
                     matchedDrops.Add(boardArr[row, column - 1].transform);
                     matchedDrops.Add(boardArr[row, column].transform);
 
-                    // boardArr[row, column - 2].gameObject.SetActive(false);
-                    // boardArr[row, column - 1].gameObject.SetActive(false);
-                    // boardArr[row, column].gameObject.SetActive(false);
-
-                    if (column + 1 < boardSize)
+                    if (column + 1 < boardSize && boardArr[row, column + 1].activeInHierarchy)
                     {
                         DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
 
                         if (followingDrop == currentDrop)
                         {
-                            if (column + 2 < boardSize)
+                            if (column + 2 < boardSize && boardArr[row, column + 2].activeInHierarchy)
                             {
                                 DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
 
                                 if (twoFollowingDrop == currentDrop)
                                 {
                                     matchedDrops.Add(boardArr[row, column + 2].transform);
-                                    // boardArr[row, column + 2].gameObject.SetActive(false);
-                                    // Debug.Log("It's a 5 match in the same row!");
                                 }
                                 else
                                 {
                                     matchedDrops.Add(boardArr[row, column + 1].transform);
-                                    // boardArr[row, column + 1].gameObject.SetActive(false);
-                                    // Debug.Log("It's a 4 match in the same row!");
                                 }
                             }
                             else
                             {
                                 matchedDrops.Add(boardArr[row, column + 1].transform);
-                                // boardArr[row, column + 1 ].gameObject.SetActive(false);
-                                // Debug.Log("It's a 4 match in the same row!");
+
                             }
                         }
                     }
                 }
-
-                /*
-                if (hasMatch)
-                {
-                    column = 2;
-                }
-                */
             }
         }
     }
@@ -115,6 +146,8 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int row = 2; row < boardSize; row++)
             {
+                // if (!CheckActivesInColumns(row, column)) return;
+
                 DropColor.DropColorState twoUpperDrop = boardArr[row - 2, column].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
@@ -126,39 +159,30 @@ public class BoardMatchController : MonoBehaviour
                     matchedDrops.Add(boardArr[row - 1, column].transform);
                     matchedDrops.Add(boardArr[row, column].transform);
 
-                    // boardArr[row - 2, column].gameObject.SetActive(false);
-                    // boardArr[row - 1, column].gameObject.SetActive(false);
-                    // boardArr[row, column].gameObject.SetActive(false);
-
-                    if (row + 1 < boardSize)
+                    if (row + 1 < boardSize && boardArr[row + 1, column].activeInHierarchy)
                     {
                         DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
 
                         if (lowerDrop == currentDrop)
                         {
-                            if (row + 2 < boardSize)
+                            if (row + 2 < boardSize && boardArr[row + 2, column].activeInHierarchy)
                             {
                                 DropColor.DropColorState twoLowerDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
 
                                 if (twoLowerDrop == currentDrop)
                                 {
                                     matchedDrops.Add(boardArr[row + 2, column].transform);
-                                    // boardArr[row + 2, column].gameObject.SetActive(false);
-                                    // Debug.Log("It's a 5 match in the same column!");
 
                                 }
                                 else
                                 {
                                     matchedDrops.Add(boardArr[row + 1, column].transform);
-                                    // boardArr[row + 1, column].gameObject.SetActive(false);
-                                    // Debug.Log("It's a 4 match in the same column!");
+
                                 }
                             }
                             else
                             {
                                 matchedDrops.Add(boardArr[row + 1, column].transform);
-                                // boardArr[row + 1, column].gameObject.SetActive(false);
-                                // Debug.Log("It's a 4 match in the same column!");
                             }
                         }
                     }
@@ -185,12 +209,11 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator DestroyMatchedDrops()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         
         foreach (var drop in matchedDrops)
         {
             board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
-            // drop.gameObject.SetActive(false);
         }
         
         EventManager.OnDropMatch?.Invoke();

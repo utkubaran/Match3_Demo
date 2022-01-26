@@ -48,7 +48,7 @@ public class PlayerInputController : MonoBehaviour
             {
                 selectedDrop = hit.transform;
                 Debug.Log(hit.transform.GetComponent<Drop>().PositionInfo);
-                Debug.Log(hit.transform.GetComponent<DropFallController>().CheckBelowEmpty());
+                // Debug.Log(hit.transform.GetComponent<DropFallController>().CheckBelowEmpty());
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -56,7 +56,7 @@ public class PlayerInputController : MonoBehaviour
             if (selectedDrop == null) return;
 
             finalPos = Input.mousePosition;
-            bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
+            bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.4f ? true : false;        // todo refactor
 
             if (isExceededThreshold)
             {

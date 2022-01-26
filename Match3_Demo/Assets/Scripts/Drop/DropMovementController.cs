@@ -44,17 +44,19 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private void Update()
     {
-        /*
+        positionInfo = drop.PositionInfo;
         int rowPos = positionInfo.x;
         int columnPos = positionInfo.z;
 
-        bool isProblem = board.boardArray[rowPos, columnPos].transform.position != this.transform.position;
+        // bool isProblem = board.boardArray[rowPos, columnPos].transform.position != this.transform.position;
+        bool isProblem = board.boardArray[rowPos, columnPos] != this.gameObject;
 
         if (isProblem)
         {
-            Debug.Log(positionInfo + " " + transform.position);
+            bool isReal = board.boardArray[rowPos, columnPos].gameObject == this.gameObject;
+            Debug.Log(isReal);
+            Debug.Log(positionInfo + "     " + ((transform.position.z / -cellSize)) + " , " + transform.position.x / cellSize + "   "  + transform.position);
         }
-        */
     }
 
     public void OnSwiped(Vector3 movementDir)
@@ -135,8 +137,19 @@ public class DropMovementController : MonoBehaviour, IMoveable
         drop.PositionInfo = positionInfo;
     }
 
+    public void MoveUp()
+    {
+        if (positionInfo.x <= 0) return;
+
+        transform.position += Vector3.forward * cellSize;
+        positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
+        drop.PositionInfo = positionInfo;
+        // board.boardArray[positionInfo.x, positionInfo.z] = this.gameObject;
+    }
+
     private void GoPreviousPositionWithDelay()
     {
+        Debug.Log("worksss!");
         if (isMoved) StartCoroutine(GoPreviousPosition());
     }
 
