@@ -22,6 +22,7 @@ public class BoardMatchController : MonoBehaviour
         // EventManager.OnPlayerSwiped.AddListener(CheckMatchesInColumns);
         // EventManager.OnPlayerSwiped.AddListener(HandleMatches);
         EventManager.OnPlayerSwiped.AddListener(CheckForMatchedDrops);
+        // EventManager.OnDropsFall.AddListener(CheckForMatchedDrops);
         // EventManager.OnDropMatch.AddListener(CheckMatchesInRows);
         // EventManager.OnDropMatch.AddListener(CheckMatchesInColumns);
     }
@@ -33,6 +34,7 @@ public class BoardMatchController : MonoBehaviour
         // EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInColumns);
         // EventManager.OnPlayerSwiped.RemoveListener(HandleMatches);
         EventManager.OnPlayerSwiped.RemoveListener(CheckForMatchedDrops);
+        // EventManager.OnDropsFall.RemoveListener(CheckForMatchedDrops);
         // EventManager.OnDropMatch.RemoveListener(CheckMatchesInRows);
         // EventManager.OnDropMatch.RemoveListener(CheckMatchesInColumns);
     }
@@ -43,15 +45,10 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        InvokeRepeating("CheckMatchesInRows", 1f, 1f);
-        InvokeRepeating("CheckMatchesInColumns", 1f, 1f);
+        // InvokeRepeating("CheckMatchesInRows", 1f, 1f);
+        // InvokeRepeating("CheckMatchesInColumns", 1f, 1f);
         CheckMatchesInRows();
         CheckMatchesInColumns();
-    }
-
-    private void FixedUpdate()
-    {
-        // boardArr = board.boardArray;
     }
 
     private void CheckForMatchedDrops()
@@ -66,38 +63,6 @@ public class BoardMatchController : MonoBehaviour
         CheckMatchesInColumns();
         yield return new WaitForSeconds(0.25f);
         HandleMatches();
-    }
-
-    private bool CheckActivesInRows(int row, int column)
-    {
-        bool isTwoPreviousInScene = boardArr[row, column - 2].activeInHierarchy;
-        bool isPreviousInScene = boardArr[row, column - 1].activeInHierarchy;
-        bool isInScene = boardArr[row, column].activeInHierarchy;
-
-        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    private bool CheckActivesInColumns(int row, int column)
-    {
-        bool isTwoPreviousInScene = boardArr[row - 2, column].activeInHierarchy;
-        bool isPreviousInScene = boardArr[row - 1, column].activeInHierarchy;
-        bool isInScene = boardArr[row, column].activeInHierarchy;
-
-        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
     }
 
     private void CheckMatchesInRows()
@@ -154,8 +119,6 @@ public class BoardMatchController : MonoBehaviour
                         }
                     }
                 }
-
-                // if (!CheckActivesInRows(row, column)) return;
             }
         }
     }
@@ -214,8 +177,6 @@ public class BoardMatchController : MonoBehaviour
                             }
                         }
                     }
-
-                // if (!CheckActivesInColumns(row, column)) return;
                 }
             }
         }
@@ -235,19 +196,6 @@ public class BoardMatchController : MonoBehaviour
             StartCoroutine(DestroyMatchedDrops());
             EventManager.OnDropMatch?.Invoke();
         }
-
-        /*
-        if (hasMatch)
-        {
-            Debug.Log("matchhhh!");
-            StartCoroutine(DestroyMatchedDrops());
-            EventManager.OnDropMatch?.Invoke();
-        }
-        else
-        {
-            EventManager.OnNoMatch?.Invoke();
-        }
-        */
     }
 
     private IEnumerator DestroyMatchedDrops()
@@ -260,8 +208,37 @@ public class BoardMatchController : MonoBehaviour
         }
 
         matchedDrops.Clear();
-        
-        // EventManager.OnDropMatch?.Invoke();
-        // matchedDrops.Clear();
+    }
+
+    private bool CheckActivesInRows(int row, int column)
+    {
+        bool isTwoPreviousInScene = boardArr[row, column - 2].activeInHierarchy;
+        bool isPreviousInScene = boardArr[row, column - 1].activeInHierarchy;
+        bool isInScene = boardArr[row, column].activeInHierarchy;
+
+        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private bool CheckActivesInColumns(int row, int column)
+    {
+        bool isTwoPreviousInScene = boardArr[row - 2, column].activeInHierarchy;
+        bool isPreviousInScene = boardArr[row - 1, column].activeInHierarchy;
+        bool isInScene = boardArr[row, column].activeInHierarchy;
+
+        if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

@@ -50,7 +50,7 @@ public class DropFallController : MonoBehaviour
     public IEnumerator CheckBelowWithDelay()
     {
         CheckBelow();
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(1f);
         EventManager.OnDropsFall?.Invoke();
     }
 
@@ -87,6 +87,8 @@ public class DropFallController : MonoBehaviour
         {
             MoveDown();
         }
+
+        EventManager.OnDropsFall?.Invoke();
     }
 
     public void MoveDown()
