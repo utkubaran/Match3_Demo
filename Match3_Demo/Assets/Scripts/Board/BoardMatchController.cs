@@ -13,8 +13,6 @@ public class BoardMatchController : MonoBehaviour
 
     private List<Transform> matchedDrops;
 
-    private bool hasMatch = false;
-
     private void OnEnable()
     {
         // EventManager.OnPlayerSwiped.AddListener( () => boardArr = board.boardArray );

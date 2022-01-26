@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BoardDropSpawner : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField, Tooltip("Please select spawner columns.")]
     private bool[] spawnerColumns;          // to choose which columns have respawn feature during gamepaly
 
     private Board board;
@@ -55,7 +55,7 @@ public class BoardDropSpawner : MonoBehaviour
             boardArr = board.boardArray;
             bool isActiveInScene = boardArr[0, i].gameObject.activeInHierarchy;
 
-            if (!isActiveInScene)
+            if (!isActiveInScene && spawnerColumns[i])
             {
                 int randomNum = Random.Range((int)0, (int)4);
                 CheckSequants(GetLastDropInColumn(i), i, randomNum);

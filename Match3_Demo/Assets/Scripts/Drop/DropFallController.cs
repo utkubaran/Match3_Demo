@@ -16,8 +16,6 @@ public class DropFallController : MonoBehaviour
 
     private bool isBelowEmpty;
 
-    private float controlTimer = 0.05f;
-
     private void OnEnable()
     {
         // EventManager.OnDropMatch.AddListener(CheckBelow);
