@@ -29,4 +29,31 @@ public class Board : MonoBehaviour
     {
         boardArray = new GameObject[boardSize, boardSize];
     }
+    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            foreach (var obj in boardArray)
+            {
+                if (obj.activeSelf)
+                {
+                    Debug.Log("active");
+                }
+                else
+                {
+                    Debug.Log("deactive");
+                }
+
+                if (obj.activeInHierarchy)
+                {
+                    Debug.Log("Second method active");
+                }
+                else
+                {
+                    Debug.Log("Second method deactive");
+                }
+            }
+        }
+    }
 }

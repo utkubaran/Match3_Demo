@@ -56,11 +56,9 @@ public class PlayerInputController : MonoBehaviour
             finalPos = Input.mousePosition;
             bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
 
-            if (isExceededThreshold)
-            {
-                swipeDirection = GetSwipeDirection(finalPos - startPos);
-            }
+            if (!isExceededThreshold) return;
 
+            swipeDirection = GetSwipeDirection(finalPos - startPos);
             selectedDrop.GetComponent<DropMovementController>().OnSwiped(swipeDirection);
             EventManager.OnPlayerSwiped?.Invoke();
             swipeDirection = Vector3.zero;

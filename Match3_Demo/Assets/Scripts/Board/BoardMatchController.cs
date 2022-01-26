@@ -49,9 +49,9 @@ public class BoardMatchController : MonoBehaviour
         CheckMatchesInColumns();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        boardArr = board.boardArray;
+        // boardArr = board.boardArray;
     }
 
     private void CheckForMatchedDrops()
@@ -106,46 +106,56 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int column = 2; column < boardSize; column++)
             {
-                if (!CheckActivesInRows(row, column)) return;
+                boardArr = board.boardArray;
 
-                DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
-                DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
-                DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
+                // bool isTwoPreviousInScene = boardArr[row, column - 2].gameObject.activeInHierarchy;
+                // bool isPreviousInScene = boardArr[row, column - 1].gameObject.activeInHierarchy;
+                // bool isInScene = boardArr[row, column].gameObject.activeInHierarchy;
 
-                if ((currentDrop == previousDrop) && (twoPreviousDrop == currentDrop))
+                // if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene) return;
+
+                if (CheckActivesInRows(row, column))
                 {
-                    hasMatch = true;
-                    matchedDrops.Add(boardArr[row, column - 2].transform);
-                    matchedDrops.Add(boardArr[row, column - 1].transform);
-                    matchedDrops.Add(boardArr[row, column].transform);
+                    DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
+                    DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
+                    DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
 
-                    if (column + 1 < boardSize && boardArr[row, column + 1].activeInHierarchy)
+                    if ((currentDrop == previousDrop) && (twoPreviousDrop == currentDrop))
                     {
-                        DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
+                        matchedDrops.Add(boardArr[row, column - 2].transform);
+                        matchedDrops.Add(boardArr[row, column - 1].transform);
+                        matchedDrops.Add(boardArr[row, column].transform);
 
-                        if (followingDrop == currentDrop)
+                        if (column + 1 < boardSize && boardArr[row, column + 1].gameObject.activeInHierarchy)
                         {
-                            if (column + 2 < boardSize && boardArr[row, column + 2].activeInHierarchy)
-                            {
-                                DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
+                            DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
 
-                                if (twoFollowingDrop == currentDrop)
+                            if (followingDrop == currentDrop)
+                            {
+                                if (column + 2 < boardSize && boardArr[row, column + 2].gameObject.activeInHierarchy)
                                 {
-                                    matchedDrops.Add(boardArr[row, column + 2].transform);
+                                    DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
+
+                                    if (twoFollowingDrop == currentDrop)
+                                    {
+                                        matchedDrops.Add(boardArr[row, column + 2].transform);
+                                    }
+                                    else
+                                    {
+                                        matchedDrops.Add(boardArr[row, column + 1].transform);
+                                    }
                                 }
                                 else
                                 {
                                     matchedDrops.Add(boardArr[row, column + 1].transform);
-                                }
-                            }
-                            else
-                            {
-                                matchedDrops.Add(boardArr[row, column + 1].transform);
 
+                                }
                             }
                         }
                     }
                 }
+
+                // if (!CheckActivesInRows(row, column)) return;
             }
         }
     }
@@ -156,46 +166,56 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int row = 2; row < boardSize; row++)
             {
-                if (!CheckActivesInColumns(row, column)) return;
+                boardArr = board.boardArray;
 
-                DropColor.DropColorState twoUpperDrop = boardArr[row - 2, column].GetComponent<Drop>().DropColorInfo;
-                DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
-                DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
+                // bool isTwoPreviousInScene = boardArr[row - 2, column].gameObject.activeInHierarchy;
+                // bool isPreviousInScene = boardArr[row - 1, column].gameObject.activeInHierarchy;
+                // bool isInScene = boardArr[row, column].gameObject.activeInHierarchy;
 
-                if ((currentDrop == upperDrop) && (currentDrop == twoUpperDrop))
+                // if (!isInScene || !isPreviousInScene || !isTwoPreviousInScene) return;
+
+                if (CheckActivesInColumns(row, column))
                 {
-                    hasMatch = true;
-                    matchedDrops.Add(boardArr[row - 2, column].transform);
-                    matchedDrops.Add(boardArr[row - 1, column].transform);
-                    matchedDrops.Add(boardArr[row, column].transform);
+                    DropColor.DropColorState twoUpperDrop = boardArr[row - 2, column].GetComponent<Drop>().DropColorInfo;
+                    DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
+                    DropColor.DropColorState currentDrop = boardArr[row, column].GetComponent<Drop>().DropColorInfo;
 
-                    if (row + 1 < boardSize && boardArr[row + 1, column].activeInHierarchy)
+                    if ((currentDrop == upperDrop) && (currentDrop == twoUpperDrop))
                     {
-                        DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
+                        matchedDrops.Add(boardArr[row - 2, column].transform);
+                        matchedDrops.Add(boardArr[row - 1, column].transform);
+                        matchedDrops.Add(boardArr[row, column].transform);
 
-                        if (lowerDrop == currentDrop)
+                        if (row + 1 < boardSize && boardArr[row + 1, column].gameObject.activeInHierarchy)
                         {
-                            if (row + 2 < boardSize && boardArr[row + 2, column].activeInHierarchy)
+                            DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
+
+                            if (lowerDrop == currentDrop)
                             {
-                                DropColor.DropColorState twoLowerDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
-
-                                if (twoLowerDrop == currentDrop)
+                                if (row + 2 < boardSize && boardArr[row + 2, column].gameObject.activeInHierarchy)
                                 {
-                                    matchedDrops.Add(boardArr[row + 2, column].transform);
+                                    DropColor.DropColorState twoLowerDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
 
+                                    if (twoLowerDrop == currentDrop)
+                                    {
+                                        matchedDrops.Add(boardArr[row + 2, column].transform);
+
+                                    }
+                                    else
+                                    {
+                                        matchedDrops.Add(boardArr[row + 1, column].transform);
+
+                                    }
                                 }
                                 else
                                 {
                                     matchedDrops.Add(boardArr[row + 1, column].transform);
-
                                 }
-                            }
-                            else
-                            {
-                                matchedDrops.Add(boardArr[row + 1, column].transform);
                             }
                         }
                     }
+
+                // if (!CheckActivesInColumns(row, column)) return;
                 }
             }
         }
@@ -205,36 +225,43 @@ public class BoardMatchController : MonoBehaviour
     { 
         matchedDrops = matchedDrops.Distinct().ToList();
 
+        if (matchedDrops.Count == 0)
+        {
+            EventManager.OnNoMatch?.Invoke();
+        }
+        else
+        {
+            Debug.Log("matchhhh!");
+            StartCoroutine(DestroyMatchedDrops());
+            EventManager.OnDropMatch?.Invoke();
+        }
+
+        /*
         if (hasMatch)
         {
             Debug.Log("matchhhh!");
-
-            foreach (var drop in matchedDrops)
-            {
-                board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
-            }
-
+            StartCoroutine(DestroyMatchedDrops());
             EventManager.OnDropMatch?.Invoke();
-            matchedDrops.Clear();
-            // StartCoroutine(DestroyMatchedDrops());
-            hasMatch = false;
         }
         else
         {
             EventManager.OnNoMatch?.Invoke();
         }
+        */
     }
 
     private IEnumerator DestroyMatchedDrops()
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.5f);
         
         foreach (var drop in matchedDrops)
         {
             board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
         }
-        
-        EventManager.OnDropMatch?.Invoke();
+
         matchedDrops.Clear();
+        
+        // EventManager.OnDropMatch?.Invoke();
+        // matchedDrops.Clear();
     }
 }

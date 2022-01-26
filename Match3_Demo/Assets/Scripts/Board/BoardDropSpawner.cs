@@ -42,7 +42,6 @@ public class BoardDropSpawner : MonoBehaviour
     {
         if ( Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("worksssss");
             SpawnDrops();
         }
     }
@@ -58,8 +57,6 @@ public class BoardDropSpawner : MonoBehaviour
 
             if (!isActiveInScene)
             {
-                Debug.Log("works");
-
                 int randomNum = Random.Range((int)0, (int)4);
                 CheckSequants(GetLastDropInColumn(i), i, randomNum);
                 Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
@@ -81,7 +78,7 @@ public class BoardDropSpawner : MonoBehaviour
         DropColor.DropColorState previousDrop = 0;
         DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
 
-        if (row - 1 < 0 || row + 1  > boardSize)        // todo refactor, bugs
+        if (row - 1 < 0 || row + 1  >= boardSize)        // todo refactor, bugs
         {
             isSequentInRow = false;
         }
@@ -92,7 +89,7 @@ public class BoardDropSpawner : MonoBehaviour
             isSequentInRow = (currentDrop == lowerDrop) && (currentDrop == upperDrop);
         }
 
-        if (column - 1 < 0 || column + 1 > boardSize)       // todo refactor, bugs
+        if (column - 1 < 0 || column + 1 >= boardSize)       // todo refactor, bugs
         {
             isSequentInColumn = false;
         }

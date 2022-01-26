@@ -144,7 +144,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
         transform.position += Vector3.forward * cellSize;
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
         drop.PositionInfo = positionInfo;
-        // board.boardArray[positionInfo.x, positionInfo.z] = this.gameObject;
     }
 
     private void GoPreviousPositionWithDelay()
