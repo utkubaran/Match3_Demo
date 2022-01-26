@@ -47,9 +47,11 @@ public class DropFallController : MonoBehaviour
     }
 
 
-    public bool CheckBelowEmpty()
+    public IEnumerator CheckBelowWithDelay()
     {
-        return !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
+        CheckBelow();
+        yield return new WaitForSeconds(0.25f);
+        EventManager.OnDropsFall?.Invoke();
     }
 
 /*
@@ -97,12 +99,19 @@ public class DropFallController : MonoBehaviour
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
-        // rowPosition++;      // todo refactor
 
         drop.PositionInfo = positionInfo;
+
+        if (rowPosition + 2 >= boardSize)
+        {
+            isBelowEmpty = false;
+            return;
+        }
+
         isBelowEmpty = !board.boardArray[rowPosition + 2, columnPosition].gameObject.activeInHierarchy;
     }
     
+    /*
     private IEnumerator CheckBelowWithDelay()
     {
         yield return new WaitForSeconds((boardSize - positionInfo.x) * 0.1f);
@@ -118,4 +127,5 @@ public class DropFallController : MonoBehaviour
             }
         }
     }
+    */
 }

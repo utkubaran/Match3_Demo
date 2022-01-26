@@ -39,6 +39,7 @@ public class ObjectPooler : MonoBehaviour
             for (int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.dropPrefab);
+                obj.transform.position = (Vector3.left + Vector3.forward) * 5f;
                 obj.transform.parent = this.transform;
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);

@@ -169,7 +169,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 960
-  movetimer: 1
 --- !u!1 &518316154
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198975fa9a0d69f499da3ba40a6a844f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerColumns: 0101000000000101
 --- !u!1 &1613060903
 GameObject:
   m_ObjectHideFlags: 0

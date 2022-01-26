@@ -17,22 +17,24 @@ public class BoardMatchController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.OnPlayerSwiped.AddListener( () => boardArr = board.boardArray );
-        EventManager.OnPlayerSwiped.AddListener(CheckMatchesInRows);
-        EventManager.OnPlayerSwiped.AddListener(CheckMatchesInColumns);
-        EventManager.OnPlayerSwiped.AddListener(HandleMatches);
-        EventManager.OnDropMatch.AddListener(CheckMatchesInRows);
-        EventManager.OnDropMatch.AddListener(CheckMatchesInColumns);
+        // EventManager.OnPlayerSwiped.AddListener( () => boardArr = board.boardArray );
+        // EventManager.OnPlayerSwiped.AddListener(CheckMatchesInRows);
+        // EventManager.OnPlayerSwiped.AddListener(CheckMatchesInColumns);
+        // EventManager.OnPlayerSwiped.AddListener(HandleMatches);
+        EventManager.OnPlayerSwiped.AddListener(CheckForMatchedDrops);
+        // EventManager.OnDropMatch.AddListener(CheckMatchesInRows);
+        // EventManager.OnDropMatch.AddListener(CheckMatchesInColumns);
     }
 
     private void OnDisable()
     {
-        EventManager.OnPlayerSwiped.RemoveListener( () => boardArr = board.boardArray );
-        EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInRows);
-        EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInColumns);
-        EventManager.OnPlayerSwiped.RemoveListener(HandleMatches);
-        EventManager.OnDropMatch.RemoveListener(CheckMatchesInRows);
-        EventManager.OnDropMatch.RemoveListener(CheckMatchesInColumns);
+        // EventManager.OnPlayerSwiped.RemoveListener( () => boardArr = board.boardArray );
+        // EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInRows);
+        // EventManager.OnPlayerSwiped.RemoveListener(CheckMatchesInColumns);
+        // EventManager.OnPlayerSwiped.RemoveListener(HandleMatches);
+        EventManager.OnPlayerSwiped.RemoveListener(CheckForMatchedDrops);
+        // EventManager.OnDropMatch.RemoveListener(CheckMatchesInRows);
+        // EventManager.OnDropMatch.RemoveListener(CheckMatchesInColumns);
     }
 
     void Start()
@@ -50,6 +52,20 @@ public class BoardMatchController : MonoBehaviour
     private void Update()
     {
         boardArr = board.boardArray;
+    }
+
+    private void CheckForMatchedDrops()
+    {
+        StartCoroutine(CheckForMatchedDropsWithDelay());
+    }
+
+    private IEnumerator CheckForMatchedDropsWithDelay()
+    {
+        yield return new WaitForSeconds(0.25f);
+        CheckMatchesInRows();
+        CheckMatchesInColumns();
+        yield return new WaitForSeconds(0.25f);
+        HandleMatches();
     }
 
     private bool CheckActivesInRows(int row, int column)
@@ -90,13 +106,7 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int column = 2; column < boardSize; column++)
             {
-                // if (!CheckActivesInRows(row, column)) return;
-
-                // bool isTwoPreviousInScene = boardArr[row - 2, column].activeInHierarchy;
-                // bool isPreviousInScene = boardArr[row - 1, column].activeInHierarchy;
-                // bool isCurrentInScene = boardArr[row, column].activeInHierarchy;
-
-                // if (!isTwoPreviousInScene || !isPreviousInScene || isCurrentInScene) continue;
+                if (!CheckActivesInRows(row, column)) return;
 
                 DropColor.DropColorState twoPreviousDrop = boardArr[row, column - 2].GetComponent<Drop>().DropColorInfo;;
                 DropColor.DropColorState previousDrop = boardArr[row, column - 1].GetComponent<Drop>().DropColorInfo;
@@ -146,7 +156,7 @@ public class BoardMatchController : MonoBehaviour
         {
             for (int row = 2; row < boardSize; row++)
             {
-                // if (!CheckActivesInColumns(row, column)) return;
+                if (!CheckActivesInColumns(row, column)) return;
 
                 DropColor.DropColorState twoUpperDrop = boardArr[row - 2, column].GetComponent<Drop>().DropColorInfo;
                 DropColor.DropColorState upperDrop = boardArr[row - 1, column].GetComponent<Drop>().DropColorInfo;
@@ -192,13 +202,21 @@ public class BoardMatchController : MonoBehaviour
     }
 
     private void HandleMatches()
-    {
-        
+    { 
         matchedDrops = matchedDrops.Distinct().ToList();
 
         if (hasMatch)
         {
-            StartCoroutine(DestroyMatchedDrops());
+            Debug.Log("matchhhh!");
+
+            foreach (var drop in matchedDrops)
+            {
+                board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
+            }
+
+            EventManager.OnDropMatch?.Invoke();
+            matchedDrops.Clear();
+            // StartCoroutine(DestroyMatchedDrops());
             hasMatch = false;
         }
         else
@@ -209,7 +227,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator DestroyMatchedDrops()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.15f);
         
         foreach (var drop in matchedDrops)
         {
@@ -217,7 +235,6 @@ public class BoardMatchController : MonoBehaviour
         }
         
         EventManager.OnDropMatch?.Invoke();
-        EventManager.OnMatch?.Invoke(matchedDrops);
         matchedDrops.Clear();
     }
 }

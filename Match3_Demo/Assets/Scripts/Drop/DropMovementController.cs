@@ -149,7 +149,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private void GoPreviousPositionWithDelay()
     {
-        Debug.Log("worksss!");
         if (isMoved) StartCoroutine(GoPreviousPosition());
     }
 
