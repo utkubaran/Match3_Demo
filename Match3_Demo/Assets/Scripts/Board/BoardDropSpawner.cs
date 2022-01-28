@@ -62,7 +62,7 @@ public class BoardDropSpawner : MonoBehaviour
                 int randomNum = Random.Range((int)0, (int)4);
                 CheckSequants(GetLastDropInColumn(i), i, randomNum);
                 Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
-                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
+                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
                 EventManager.OnDropSpawned?.Invoke();

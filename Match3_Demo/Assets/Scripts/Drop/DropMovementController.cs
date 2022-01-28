@@ -10,7 +10,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private int boardSize;
 
-    private float cellSize, moveBackTime = 1f;
+    private float cellSize, moveBackTime = 0.50f;
 
     private Vector3Int positionInfo, previousPositionInfo;
 
@@ -50,7 +50,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
         int rowPos = positionInfo.x;
         int columnPos = positionInfo.z;
 
-        // bool isProblem = board.boardArray[rowPos, columnPos].transform.position != this.transform.position;
         bool isProblem = board.boardArray[rowPos, columnPos] != this.gameObject;
 
         if (isProblem)

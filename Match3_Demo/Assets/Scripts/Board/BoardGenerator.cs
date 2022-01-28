@@ -7,6 +7,7 @@ public class BoardGenerator : MonoBehaviour
 {
     private Board board;
     
+    [SerializeField]
     private ObjectPooler objectPooler;
 
     private int randomNum, boardSize;
@@ -34,7 +35,7 @@ public class BoardGenerator : MonoBehaviour
                 CheckSequants(j, i, randomNum);
                 spawnPos = new Vector3(i * cellSize, 0f, j * -cellSize);
                 
-                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
+                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(j, 0, i);
                 obj.GetComponent<IPooledObject>().OnObjectSpawn();
                 board.boardArray[j, i] = obj;

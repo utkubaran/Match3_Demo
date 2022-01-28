@@ -13,7 +13,7 @@ public class PlayerInputController : MonoBehaviour
 
     private Transform selectedDrop;
 
-    private float timeRemaining, moveTimer = 2f;
+    private float timeRemaining, moveTimer = 1f;
 
     private bool isPlaying, isMoved;
 
@@ -30,6 +30,7 @@ public class PlayerInputController : MonoBehaviour
 
     void Update()
     {
+        timeRemaining -= Time.deltaTime;
         GetSwipeDirectionFromPlayer();
     }
 
@@ -56,7 +57,7 @@ public class PlayerInputController : MonoBehaviour
             finalPos = Input.mousePosition;
             bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
 
-            if (!isExceededThreshold) return;
+            if (!isExceededThreshold || !Checktimer()) return;
 
             swipeDirection = GetSwipeDirection(finalPos - startPos);
             selectedDrop.GetComponent<DropMovementController>().OnSwiped(swipeDirection);
@@ -97,8 +98,6 @@ public class PlayerInputController : MonoBehaviour
 
     private bool Checktimer()       // todo remove if no need
     {
-        timeRemaining -= Time.deltaTime;
-
         if (timeRemaining > 0) return false;
 
         timeRemaining = moveTimer;

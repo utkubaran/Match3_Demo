@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &426057370373718535
+--- !u!1 &6700379012912472203
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 426057370373718539}
-  - component: {fileID: 426057370373718534}
-  - component: {fileID: 426057370373718537}
-  - component: {fileID: 426057370373718538}
-  - component: {fileID: 426057370373718532}
-  - component: {fileID: -3404180378092371792}
-  m_Layer: 6
-  m_Name: Red Drop
-  m_TagString: Red Drop
+  - component: {fileID: 6700379012912472199}
+  - component: {fileID: 6700379012912472202}
+  - component: {fileID: 6700379012912472197}
+  - component: {fileID: 6700379012912472198}
+  - component: {fileID: 6700379012912472200}
+  - component: {fileID: -2729937478946641534}
+  m_Layer: 7
+  m_Name: Blue Circle
+  m_TagString: Blue Drop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &426057370373718539
+--- !u!4 &6700379012912472199
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.68946713, y: 1.3928702, z: -0.106210366}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!212 &426057370373718534
+--- !u!212 &6700379012912472202
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 90a6dcda235fbeb47bc66569a3200c36, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ffe151f508ebbf643b6f99a159f5c7b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,50 +86,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &426057370373718537
+--- !u!114 &6700379012912472197
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74ef17d8186d2114f81abe83ac5cd283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropData: {fileID: 11400000, guid: 6277f912f9ae79344921c737f3719458, type: 2}
---- !u!114 &426057370373718538
+  dropData: {fileID: 11400000, guid: 4234c6b3ace9c9745b677f4dc0d52e67, type: 2}
+--- !u!114 &6700379012912472198
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b40e947130f7b2f45935a2dd96bc49c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &426057370373718532
+--- !u!114 &6700379012912472200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96debc5205ae87341933861eae2c75e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &-3404180378092371792
+--- !u!65 &-2729937478946641534
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426057370373718535}
+  m_GameObject: {fileID: 6700379012912472203}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

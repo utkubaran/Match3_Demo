@@ -29,7 +29,7 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        // InvokeRepeating("CheckForMatchedDrops", 1f, 1f);
+        // InvokeRepeating("CheckForMatchedDrops", 2f, 1f);
     }
 
     private void CheckForMatchedDrops()
@@ -39,7 +39,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
         CheckMatchesInRows();
         CheckMatchesInColumns();
         HandleMatches();
@@ -170,7 +170,6 @@ public class BoardMatchController : MonoBehaviour
                 board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
             }
 
-            Debug.Log(matchedDrops.Count);
             EventManager.OnDropMatch?.Invoke();
             EventManager.OnMatchList?.Invoke(matchedDrops);
             matchedDrops.Clear();
