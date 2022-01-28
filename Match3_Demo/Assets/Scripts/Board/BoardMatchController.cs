@@ -182,7 +182,7 @@ public class BoardMatchController : MonoBehaviour
         
         foreach (var drop in matchedDrops)
         {
-            board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
+            board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.SetActive(false);
             // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
         }
 

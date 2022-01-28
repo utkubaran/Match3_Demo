@@ -32,10 +32,4 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     {
         return;
     }
-
-    public void OnMatch()
-    {
-        transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * 0.1f, 0.5f);
-        this.gameObject.SetActive(false);
-    }
 }
