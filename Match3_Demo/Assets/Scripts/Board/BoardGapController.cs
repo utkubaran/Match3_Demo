@@ -28,17 +28,6 @@ public class BoardGapController : MonoBehaviour
     private void Start()
     {
         boardArr = board.boardArray;
-        // InvokeRepeating("CheckGaps", 0.1f, 1f);
-    }
-
-    private void Update()
-    {
-        // CheckGaps();
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            CheckGaps();
-        }
     }
 
     private void CheckGaps()
@@ -62,7 +51,8 @@ public class BoardGapController : MonoBehaviour
                     board.boardArray[row, column].GetComponent<DropFallController>().CheckBelow();
                 }
             }
-            yield return new WaitForSeconds(0.005f);
+
+            yield return new WaitForSeconds(0.01f);
         }
 
         EventManager.OnDropsFall?.Invoke();

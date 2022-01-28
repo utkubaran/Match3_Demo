@@ -16,11 +16,13 @@ public class BoardMatchController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayerSwiped.AddListener(CheckForMatchedDrops);
+        EventManager.OnBoardCheck.AddListener(CheckForMatchedDrops);
     }
 
     private void OnDisable()
     {
         EventManager.OnPlayerSwiped.RemoveListener(CheckForMatchedDrops);
+        EventManager.OnBoardCheck.RemoveListener(CheckForMatchedDrops);
     }
 
     void Start()
@@ -39,7 +41,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.1f);
         CheckMatchesInRows();
         CheckMatchesInColumns();
         HandleMatches();
@@ -164,28 +166,31 @@ public class BoardMatchController : MonoBehaviour
         }
         else
         {
+            StartCoroutine(DestroyMatchedDrops());
+
+            /*
             foreach (var drop in matchedDrops)
             {
                 board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
                 // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
             }
+            */
 
-            EventManager.OnDropMatch?.Invoke();
-            EventManager.OnMatchList?.Invoke(matchedDrops);
-            matchedDrops.Clear();
+
         }
     }
 
     private IEnumerator DestroyMatchedDrops()
     {
-        yield return new WaitForSeconds(0f);
-        
         foreach (var drop in matchedDrops)
         {
             board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
             // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
         }
 
+        yield return new WaitForSeconds(0.505f);
+        EventManager.OnDropMatch?.Invoke();
+        EventManager.OnMatchList?.Invoke(matchedDrops);
         matchedDrops.Clear();
     }
 

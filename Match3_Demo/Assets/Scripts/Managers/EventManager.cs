@@ -21,6 +21,7 @@ public static class EventManager
     public static UnityEvent OnDropMatch = new UnityEvent();
     public static UnityEvent OnDropsFall = new UnityEvent();
     public static UnityEvent OnDropSpawned = new UnityEvent();
+    public static UnityEvent OnBoardCheck = new UnityEvent();
     #endregion
 }
 

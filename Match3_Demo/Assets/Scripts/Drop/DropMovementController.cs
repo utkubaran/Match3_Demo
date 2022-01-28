@@ -10,7 +10,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private int boardSize;
 
-    private float cellSize, moveBackTime = 0.50f;
+    private float cellSize, moveBackTime = 0.25f;
 
     private Vector3Int positionInfo, previousPositionInfo;
 

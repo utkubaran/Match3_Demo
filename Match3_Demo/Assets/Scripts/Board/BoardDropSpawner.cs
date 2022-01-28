@@ -17,7 +17,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private GameObject[,] boardArr;
 
-    private int boardSize, randomNum;
+    private int boardSize, randomNum, previousNum;
 
     private void OnEnable()
     {
@@ -38,19 +38,16 @@ public class BoardDropSpawner : MonoBehaviour
         boardArr = board.boardArray;
     }
 
-    private void Update()
+    private void SpawnDrops()
     {
-        if ( Input.GetKeyDown(KeyCode.D))
-        {
-            SpawnDrops();
-        }
+        StartCoroutine(SpawnDropsWithDelay());
     }
 
     private IEnumerator SpawnDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.2f);
-
-        boardArr = board.boardArray;
+        yield return new WaitForSeconds(0.1f);
+        bool isSpawned = false;
+        previousNum = 10;
 
         for (int i = 0; i < boardSize; i++)
         {
@@ -59,49 +56,32 @@ public class BoardDropSpawner : MonoBehaviour
 
             if (!isActiveInScene && spawnerColumns[i])
             {
+                isSpawned = true;
                 int randomNum = Random.Range((int)0, (int)4);
-                CheckSequants(GetLastDropInColumn(i), i, randomNum);
+                CheckSequents(GetLastDropInColumn(i), i, randomNum, previousNum);
                 Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
                 EventManager.OnDropSpawned?.Invoke();
+                previousNum = randomNum;
             }
         }
-    }
 
-    private void SpawnDrops()
-    {
-        StartCoroutine(SpawnDropsWithDelay());
-        /*
-        boardArr = board.boardArray;
-
-        for (int i = 0; i < boardSize; i++)
+        if (isSpawned)
         {
-            boardArr = board.boardArray;
-            bool isActiveInScene = boardArr[0, i].gameObject.activeInHierarchy;
-
-            if (!isActiveInScene && spawnerColumns[i])
-            {
-                int randomNum = Random.Range((int)0, (int)4);
-                CheckSequants(GetLastDropInColumn(i), i, randomNum);
-                Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
-                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
-                obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
-                board.boardArray.SetValue(obj, 0, i);
-                EventManager.OnDropSpawned?.Invoke();
-            }
+            yield return new WaitForSeconds(0.6f);
+            // EventManager.OnBoardCheck?.Invoke();
+            Debug.Log("workssss");
         }
-        */
     }
 
-    private void CheckSequants(int row, int column, int num)
+    private void CheckSequents(int row, int column, int num, int prevNum)
     {
         bool isSequentInRow;
         bool isSequentInColumn;
 
         DropColor.DropColorState lowerDrop = 0;
-        DropColor.DropColorState upperDrop = 0;
         DropColor.DropColorState followingDrop = 0;
         DropColor.DropColorState previousDrop = 0;
         DropColor.DropColorState currentDrop = (DropColor.DropColorState)num;
@@ -113,8 +93,7 @@ public class BoardDropSpawner : MonoBehaviour
         else
         {
             lowerDrop = board.boardArray[row + 1, column].GetComponent<Drop>().DropColorInfo;
-            upperDrop = board.boardArray[row - 1, column].GetComponent<Drop>().DropColorInfo;
-            isSequentInRow = (currentDrop == lowerDrop) && (currentDrop == upperDrop);
+            isSequentInRow = (currentDrop == lowerDrop);
         }
 
         if (column - 1 < 0 || column + 1 >= boardSize)       // todo refactor, bugs
@@ -133,7 +112,7 @@ public class BoardDropSpawner : MonoBehaviour
             num = Random.Range(0, 4);
             currentDrop = (DropColor.DropColorState)num;
             isSequentInColumn = (currentDrop == followingDrop) && (currentDrop == previousDrop);
-            isSequentInRow = (currentDrop == lowerDrop) && (currentDrop == upperDrop);
+            isSequentInRow = (currentDrop == lowerDrop) || num == prevNum;
         }
 
         randomNum = num;

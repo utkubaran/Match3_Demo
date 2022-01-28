@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DropFallController : MonoBehaviour
 {
@@ -73,6 +74,7 @@ public class DropFallController : MonoBehaviour
         int columnPosition = positionInfo.z;
 
         transform.position += Vector3.back * cellSize;
+        // transform.DOMove(transform.position + Vector3.back, 0.05f);
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
