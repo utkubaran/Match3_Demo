@@ -14,7 +14,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private Vector3Int positionInfo, previousPositionInfo;
 
-    private bool isMoved;
+    private bool isMoved, isMatched;
 
     private void Awake()
     {
@@ -24,12 +24,14 @@ public class DropMovementController : MonoBehaviour, IMoveable
     private void OnEnable()
     {
         EventManager.OnDropMatch.AddListener( () => previousPositionInfo = positionInfo);
+        EventManager.OnMatchList.AddListener(CheckMathchedDrop);
         EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
     }
 
     private void OnDisable()
     {
         EventManager.OnDropMatch.RemoveListener( () => previousPositionInfo = positionInfo);
+        EventManager.OnMatchList.RemoveListener(CheckMathchedDrop);
         EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
     }
 
@@ -160,5 +162,10 @@ public class DropMovementController : MonoBehaviour, IMoveable
         positionInfo = previousPositionInfo;
         drop.PositionInfo = positionInfo;
         isMoved = false;
+    }
+
+    private void CheckMathchedDrop(List<Transform> matchedDrops)
+    {
+        isMatched = matchedDrops.Contains(transform);
     }
 }

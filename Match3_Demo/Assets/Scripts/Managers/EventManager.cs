@@ -17,9 +17,10 @@ public static class EventManager
 
     #region Match Events
     public static UnityEvent OnNoMatch = new UnityEvent();
-    // public static MatchEvent OnMatch = new MatchEvent();
+    public static MatchEvent OnMatchList = new MatchEvent();
     public static UnityEvent OnDropMatch = new UnityEvent();
     public static UnityEvent OnDropsFall = new UnityEvent();
+    public static UnityEvent OnDropSpawned = new UnityEvent();
     #endregion
 }
 

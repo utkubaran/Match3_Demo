@@ -20,6 +20,7 @@ public class DropFallController : MonoBehaviour
     {
         // EventManager.OnDropMatch.AddListener(CheckBelow);
     }
+
     private void OnDisable()
     {
         // EventManager.OnDropMatch.RemoveListener(CheckBelow);
@@ -39,41 +40,17 @@ public class DropFallController : MonoBehaviour
         isBelowEmpty = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        CheckBelow();
-    }
-
-
-    public IEnumerator CheckBelowWithDelay()
-    {
-        CheckBelow();
-        yield return new WaitForSeconds(1f);
-        EventManager.OnDropsFall?.Invoke();
-    }
-
-/*
-    private IEnumerator CheckBelowWithDelay()
-    {
-        float waitTime = positionInfo.x * controlTimer;
-
-        yield return new WaitForSeconds(waitTime);
-
-        positionInfo = drop.PositionInfo;
-
-        if (positionInfo.x + 1 < boardSize)
+        /*
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
-
-            while (isBelowEmpty && positionInfo.x + 1 < boardSize)
-            {
-                MoveDown();
-            }
+            CheckBelow();
         }
+        */
     }
-    */
 
-    private void CheckBelow()
+    public void CheckBelow()
     {
         positionInfo = drop.PositionInfo;
 
@@ -86,10 +63,10 @@ public class DropFallController : MonoBehaviour
             MoveDown();
         }
 
-        EventManager.OnDropsFall?.Invoke();
+        // EventManager.OnDropsFall?.Invoke();
     }
 
-    public void MoveDown()
+    private void MoveDown()
     {
         positionInfo = drop.PositionInfo;
         int rowPosition = positionInfo.x;
@@ -99,33 +76,16 @@ public class DropFallController : MonoBehaviour
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
-
         drop.PositionInfo = positionInfo;
 
+        // todo refactor
         if (rowPosition + 2 >= boardSize)
         {
             isBelowEmpty = false;
-            return;
         }
-
-        isBelowEmpty = !board.boardArray[rowPosition + 2, columnPosition].gameObject.activeInHierarchy;
-    }
-    
-    /*
-    private IEnumerator CheckBelowWithDelay()
-    {
-        yield return new WaitForSeconds((boardSize - positionInfo.x) * 0.1f);
-        positionInfo = drop.PositionInfo;
-
-        if (positionInfo.x + 1 < boardSize)
+        else
         {
-            isBelowEmpty = !board.boardArray[positionInfo.x + 1, positionInfo.z].gameObject.activeInHierarchy;
-
-            while (isBelowEmpty && positionInfo.x < boardSize - 1)
-            {
-                MoveDown();
-            }
+            isBelowEmpty = !board.boardArray[rowPosition + 2, columnPosition].gameObject.activeInHierarchy;
         }
     }
-    */
 }

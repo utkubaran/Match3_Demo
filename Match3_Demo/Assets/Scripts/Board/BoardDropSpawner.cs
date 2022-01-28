@@ -40,14 +40,16 @@ public class BoardDropSpawner : MonoBehaviour
 
     private void Update()
     {
-        if ( Input.GetKeyDown(KeyCode.A))
+        if ( Input.GetKeyDown(KeyCode.D))
         {
             SpawnDrops();
         }
     }
 
-    private void SpawnDrops()
+    private IEnumerator SpawnDropsWithDelay()
     {
+        yield return new WaitForSeconds(0.2f);
+
         boardArr = board.boardArray;
 
         for (int i = 0; i < boardSize; i++)
@@ -63,8 +65,34 @@ public class BoardDropSpawner : MonoBehaviour
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
+                EventManager.OnDropSpawned?.Invoke();
             }
         }
+    }
+
+    private void SpawnDrops()
+    {
+        StartCoroutine(SpawnDropsWithDelay());
+        /*
+        boardArr = board.boardArray;
+
+        for (int i = 0; i < boardSize; i++)
+        {
+            boardArr = board.boardArray;
+            bool isActiveInScene = boardArr[0, i].gameObject.activeInHierarchy;
+
+            if (!isActiveInScene && spawnerColumns[i])
+            {
+                int randomNum = Random.Range((int)0, (int)4);
+                CheckSequants(GetLastDropInColumn(i), i, randomNum);
+                Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
+                GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.identity);
+                obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
+                board.boardArray.SetValue(obj, 0, i);
+                EventManager.OnDropSpawned?.Invoke();
+            }
+        }
+        */
     }
 
     private void CheckSequants(int row, int column, int num)
