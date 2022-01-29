@@ -107,16 +107,6 @@ public class BoardMatchController : MonoBehaviour
         else
         {
             StartCoroutine(DestroyMatchedDrops());
-
-            /*
-            foreach (var drop in matchedDrops)
-            {
-                board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
-                // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
-            }
-            */
-
-
         }
     }
 
@@ -128,7 +118,7 @@ public class BoardMatchController : MonoBehaviour
             // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].transform.position = (Vector3.forward + Vector3.left) * 5f;
         }
 
-        yield return new WaitForSeconds(0.505f);
+        yield return new WaitForSeconds(0.35f);
         EventManager.OnDropMatch?.Invoke();
         EventManager.OnMatchList?.Invoke(matchedDrops);
         matchedDrops.Clear();

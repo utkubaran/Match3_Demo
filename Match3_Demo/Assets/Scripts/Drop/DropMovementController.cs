@@ -150,7 +150,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
         if (positionInfo.x <= 0) return;
 
         // transform.position += Vector3.forward * cellSize;
-        transform.DOMove(transform.position + Vector3.forward * cellSize, 0.25f);
+        transform.DOMove(transform.position + Vector3.forward * cellSize, 0.05f);
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
         drop.PositionInfo = positionInfo;
     }

@@ -8,16 +8,18 @@ public class BoardGapController : MonoBehaviour
 
     private Board board;
 
+    private bool isBoardMoved;
+
     private void OnEnable()
     {
         EventManager.OnDropMatch.AddListener(CheckGaps);
-        EventManager.OnDropSpawned.AddListener(CheckGaps);
+        // EventManager.OnDropSpawned.AddListener(CheckGaps);
     }
 
     private void OnDisable()
     {
         EventManager.OnDropMatch.RemoveListener(CheckGaps);
-        EventManager.OnDropSpawned.RemoveListener(CheckGaps);
+        // EventManager.OnDropSpawned.RemoveListener(CheckGaps);
     }
 
     private void Awake()
@@ -42,17 +44,17 @@ public class BoardGapController : MonoBehaviour
 
         boardArr = board.boardArray;
 
-        for (int row = board.BoardSize - 1; row >= 0 ; row--)
+        for (int row = board.BoardSize - 2; row >= 0 ; row--)
         {
             for (int column = 0; column < board.BoardSize; column++)
             {
                 if (board.boardArray[row, column].activeInHierarchy)
                 {
-                    board.boardArray[row, column].GetComponent<DropFallController>().CheckBelow();
+                    board.boardArray[row, column].GetComponent<DropFallController>()?.CheckBelow();
                 }
             }
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.05f);
         }
 
         EventManager.OnDropsFall?.Invoke();

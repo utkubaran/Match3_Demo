@@ -17,6 +17,20 @@ public class PlayerInputController : MonoBehaviour
 
     private bool isPlaying;
 
+    private void OnEnable()
+    {
+        EventManager.OnLevelStart.AddListener( () => isPlaying = true );
+        EventManager.OnLevelFinish.AddListener( () => isPlaying = false );
+        EventManager.OnLevelFail.AddListener( () => isPlaying = false );
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnLevelStart.RemoveListener( () => isPlaying = true );
+        EventManager.OnLevelFinish.RemoveListener( () => isPlaying = false );
+        EventManager.OnLevelFail.RemoveListener( () => isPlaying = false );
+    }
+
     private void Awake()
     {
         mainCam = Camera.main;
@@ -36,7 +50,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void GetSwipeDirectionFromPlayer()
     {
-        if (!isPlaying) return;         // Guard Clause
+        if (!isPlaying) return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -48,6 +62,7 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
+                hit.transform.GetComponent<DropFallController>().CheckBelow();
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -96,12 +111,11 @@ public class PlayerInputController : MonoBehaviour
         }
     }
 
-    private bool Checktimer()       // todo remove if no need
+    private bool Checktimer()
     {
         if (timeRemaining > 0) return false;
 
         timeRemaining = moveTimer;
-        Debug.Log("You can play your move!");
         return true;
     }
 }

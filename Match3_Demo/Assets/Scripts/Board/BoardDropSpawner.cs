@@ -19,6 +19,9 @@ public class BoardDropSpawner : MonoBehaviour
 
     private int boardSize, randomNum, previousNum;
 
+
+    private List<GameObject> spawnedDrops;
+
     private void OnEnable()
     {
         EventManager.OnDropsFall.AddListener(SpawnDrops);
@@ -58,22 +61,52 @@ public class BoardDropSpawner : MonoBehaviour
             {
                 isSpawned = true;
                 int randomNum = Random.Range((int)0, (int)4);
-                CheckSequents(GetLastDropInColumn(i), i, randomNum, previousNum);
+
+                while (randomNum == previousNum)
+                {
+                    randomNum = Random.Range((int)0, (int)4);
+                }
+
+                // CheckSequents(GetLastDropInColumn(i), i, randomNum, previousNum);
                 Vector3 spawnPos = new Vector3(i * cellSize, 0f, 0f);
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
-                EventManager.OnDropSpawned?.Invoke();
+                yield return new WaitForSeconds(0.01f);
+                // EventManager.OnDropSpawned?.Invoke();
+                obj.GetComponent<DropFallController>()?.CheckBelow();
+                // spawnedDrops.Add(obj);
                 previousNum = randomNum;
             }
         }
 
+        // yield return new WaitForSeconds(0.1f);
+        // ventManager.OnDropsFall?.Invoke();
+
         if (isSpawned)
         {
-            yield return new WaitForSeconds(0.6f);
-            // EventManager.OnBoardCheck?.Invoke();
-            Debug.Log("workssss");
+            yield return new WaitForSeconds(0.1f);
+            EventManager.OnDropsFall?.Invoke();
         }
+        else
+        {
+            yield return new WaitForSeconds(0.25f);
+            EventManager.OnBoardCheck?.Invoke();
+        }
+
+        /*
+        if (spawnedDrops.Count != 0)
+        {
+            foreach (var drop in spawnedDrops)
+            {
+                drop.GetComponent<DropFallController>().CheckBelow();
+            }
+
+            spawnedDrops.Clear();
+            yield return new WaitForSeconds(0.35f);
+            EventManager.OnBoardCheck?.Invoke();
+        }
+        */
     }
 
     private void CheckSequents(int row, int column, int num, int prevNum)
