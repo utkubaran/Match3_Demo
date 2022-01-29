@@ -19,8 +19,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private int boardSize, randomNum, previousNum;
 
-
-    private List<GameObject> spawnedDrops;
+    private bool isProcessOn;
 
     private void OnEnable()
     {
@@ -39,6 +38,7 @@ public class BoardDropSpawner : MonoBehaviour
         cellSize = board.CellSize;
         boardSize = board.BoardSize;
         boardArr = board.boardArray;
+        isProcessOn = false;
     }
 
     private void SpawnDrops()
@@ -48,7 +48,10 @@ public class BoardDropSpawner : MonoBehaviour
 
     private IEnumerator SpawnDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        if (isProcessOn) yield return null;
+
+        isProcessOn = true;
+        yield return new WaitForSeconds(0.15f);
         bool isSpawned = false;
         previousNum = 10;
 
@@ -93,6 +96,8 @@ public class BoardDropSpawner : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
             EventManager.OnBoardCheck?.Invoke();
         }
+
+        isProcessOn = false;
 
         /*
         if (spawnedDrops.Count != 0)

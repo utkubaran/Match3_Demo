@@ -67,10 +67,10 @@ public class DropFallController : MonoBehaviour
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         moveTween.Play();
-        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
+        board.boardArray[rowPosition, columnPosition].transform.DOMove(transform.position + Vector3.forward * cellSize, 0.05f);
+        // board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
         drop.PositionInfo = positionInfo;
         moveTween.OnComplete(CheckBelow);
-        Debug.Log("Falling");
 
         /*
         while (isBelowEmpty && positionInfo.x < boardSize - 1)
