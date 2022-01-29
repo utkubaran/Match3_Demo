@@ -24,11 +24,13 @@ public class BoardDropSpawner : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnDropsFall.AddListener(SpawnDrops);
+        EventManager.OnDropsFall.AddListener(CheckBoardStatus);
     }
 
     private void OnDisable()
     {
         EventManager.OnDropsFall.RemoveListener(SpawnDrops);
+        EventManager.OnDropsFall.RemoveListener(CheckBoardStatus);
     }
 
     void Start()
@@ -39,6 +41,17 @@ public class BoardDropSpawner : MonoBehaviour
         boardSize = board.BoardSize;
         boardArr = board.boardArray;
         isProcessOn = false;
+    }
+
+    private void CheckBoardStatus()
+    {
+        for (int i = 0; i < boardSize; i++)
+        {
+            if (board.boardArray[0, i].gameObject.activeInHierarchy || !spawnerColumns[i])
+            {
+                EventManager.OnBoardCheck?.Invoke();
+            }
+        }
     }
 
     private void SpawnDrops()
@@ -72,7 +85,7 @@ public class BoardDropSpawner : MonoBehaviour
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.075f);
                 // EventManager.OnDropSpawned?.Invoke();
                 obj.GetComponent<DropFallController>()?.CheckBelow();
                 // spawnedDrops.Add(obj);
@@ -88,11 +101,13 @@ public class BoardDropSpawner : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             EventManager.OnDropsFall?.Invoke();
         }
+        /*
         else
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
             EventManager.OnBoardCheck?.Invoke();
         }
+        */
 
         /*
         if (spawnedDrops.Count != 0)
