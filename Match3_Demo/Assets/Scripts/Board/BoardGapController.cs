@@ -38,11 +38,11 @@ public class BoardGapController : MonoBehaviour
     private IEnumerator CheckGapsWithDelay()
     {
         // one cycle
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.1f);
 
         boardArr = board.boardArray;
 
-        for (int row = board.BoardSize - 2; row >= 0 ; row--)
+        for (int row = board.BoardSize - 1; row >= 0 ; row--)
         {
             for (int column = 0; column < board.BoardSize; column++)
             {

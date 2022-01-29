@@ -538,16 +538,16 @@ MonoBehaviour:
   pools:
   - colorCode: 0
     dropPrefab: {fileID: 426057370373718535, guid: 5a8d52e57bb869641adaa6202f9f8ec9, type: 3}
-    size: 48
+    size: 32
   - colorCode: 1
     dropPrefab: {fileID: 6700379012912472203, guid: 86b40fb0ac1a3864fbdf72633c8c147e, type: 3}
-    size: 48
+    size: 32
   - colorCode: 2
     dropPrefab: {fileID: 936034730981568372, guid: 041329bcc912f0e4a8744b209d24db01, type: 3}
-    size: 48
+    size: 32
   - colorCode: 3
     dropPrefab: {fileID: 5688703216449872075, guid: 3987aa9ba430d27429a050edd55e5279, type: 3}
-    size: 48
+    size: 32
   - colorCode: 4
     dropPrefab: {fileID: 277619176505340886, guid: 32a0e15211cc370479050d76c4e81e47, type: 3}
     size: 64

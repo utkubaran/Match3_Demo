@@ -15,7 +15,7 @@ public class PlayerInputController : MonoBehaviour
 
     private float timeRemaining, moveTimer = 1f;
 
-    private bool isPlaying, isMoved;
+    private bool isPlaying;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void GetSwipeDirectionFromPlayer()
     {
-        if (!isPlaying) return;
+        if (!isPlaying) return;         // Guard Clause
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -55,12 +55,12 @@ public class PlayerInputController : MonoBehaviour
             if (selectedDrop == null) return;
 
             finalPos = Input.mousePosition;
-            bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;        // todo refactor
+            bool isExceededThreshold = (finalPos - startPos).magnitude * Time.deltaTime >= 0.25f ? true : false;
 
             if (!isExceededThreshold || !Checktimer()) return;
 
             swipeDirection = GetSwipeDirection(finalPos - startPos);
-            selectedDrop.GetComponent<DropMovementController>().OnSwiped(swipeDirection);
+            selectedDrop.GetComponent<DropMovementController>()?.OnSwiped(swipeDirection);
             EventManager.OnPlayerSwiped?.Invoke();
             swipeDirection = Vector3.zero;
             selectedDrop = null;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class DropMovementController : MonoBehaviour, IMoveable
 {
@@ -46,6 +47,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private void Update()
     {
+        // todo delete
         positionInfo = drop.PositionInfo;
         int rowPos = positionInfo.x;
         int columnPos = positionInfo.z;
@@ -75,9 +77,10 @@ public class DropMovementController : MonoBehaviour, IMoveable
             }
 
             isMoved = true;
-            board.boardArray[rowPosition - 1, columnPosition].GetComponent<DropMovementController>().ChangePlace(Vector3.back, 1, 0);
+            board.boardArray[rowPosition - 1, columnPosition].GetComponent<DropMovementController>()?.ChangePlace(Vector3.back, 1, 0);
             // this.transform.position = Vector3.Lerp(transform.position, transform.position + movementDir, 0.1f);
-            this.transform.position += movementDir * cellSize;         
+            transform.DOMove(transform.position + movementDir * cellSize, 0.25f);
+            // this.transform.position += movementDir * cellSize;         
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition - 1, columnPosition]) = (board.boardArray[rowPosition - 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x--;
         }
@@ -90,8 +93,9 @@ public class DropMovementController : MonoBehaviour, IMoveable
             }
 
             isMoved = true;
-            board.boardArray[rowPosition + 1, columnPosition].GetComponent<DropMovementController>().ChangePlace(Vector3.forward, -1, 0);
-            this.transform.position += movementDir * cellSize;
+            board.boardArray[rowPosition + 1, columnPosition].GetComponent<DropMovementController>()?.ChangePlace(Vector3.forward, -1, 0);
+            transform.DOMove(transform.position + movementDir * cellSize, 0.25f);
+            // this.transform.position += movementDir * cellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x++;
         }
@@ -104,8 +108,9 @@ public class DropMovementController : MonoBehaviour, IMoveable
             }
 
             isMoved = true;
-            board.boardArray[rowPosition, columnPosition + 1].GetComponent<DropMovementController>().ChangePlace(Vector3.left, 0, -1);
-            this.transform.position += movementDir * cellSize;
+            board.boardArray[rowPosition, columnPosition + 1].GetComponent<DropMovementController>()?.ChangePlace(Vector3.left, 0, -1);
+            transform.DOMove(transform.position + movementDir * cellSize, 0.25f);
+            // this.transform.position += movementDir * cellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition + 1]) = (board.boardArray[rowPosition, columnPosition + 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z++;
         }
@@ -118,8 +123,9 @@ public class DropMovementController : MonoBehaviour, IMoveable
             }
 
             isMoved = true;
-            board.boardArray[rowPosition, columnPosition - 1].GetComponent<DropMovementController>().ChangePlace(Vector3.right, 0, 1);
-            this.transform.position += movementDir * cellSize;
+            board.boardArray[rowPosition, columnPosition - 1].GetComponent<DropMovementController>()?.ChangePlace(Vector3.right, 0, 1);
+            transform.DOMove(transform.position + movementDir * cellSize, 0.25f);
+            // this.transform.position += movementDir * cellSize;
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition - 1]) = (board.boardArray[rowPosition, columnPosition - 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z--;
         }
@@ -133,7 +139,8 @@ public class DropMovementController : MonoBehaviour, IMoveable
         isMoved = true;
         positionInfo.x += rowChange;
         positionInfo.z += columnChange;
-        this.transform.position += movementDir * cellSize;
+        transform.DOMove(transform.position + movementDir * cellSize, 0.25f);
+        // this.transform.position += movementDir * cellSize;
         
         drop.PositionInfo = positionInfo;
     }
@@ -142,7 +149,8 @@ public class DropMovementController : MonoBehaviour, IMoveable
     {
         if (positionInfo.x <= 0) return;
 
-        transform.position += Vector3.forward * cellSize;
+        // transform.position += Vector3.forward * cellSize;
+        transform.DOMove(transform.position + Vector3.forward * cellSize, 0.25f);
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
         drop.PositionInfo = positionInfo;
     }
@@ -156,7 +164,9 @@ public class DropMovementController : MonoBehaviour, IMoveable
     {
         yield return new WaitForSeconds(moveBackTime);
 
-        transform.position = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
+        Vector3 previousPosition = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
+        transform.DOMove(previousPosition, 0.25f);
+        // transform.position = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
         board.boardArray[previousPositionInfo.x, previousPositionInfo.z] = this.gameObject;
         positionInfo = previousPositionInfo;
         drop.PositionInfo = positionInfo;

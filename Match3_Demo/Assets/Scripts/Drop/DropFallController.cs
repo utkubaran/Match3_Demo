@@ -41,16 +41,6 @@ public class DropFallController : MonoBehaviour
         isBelowEmpty = false;
     }
 
-    private void Update()
-    {
-        /*
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            CheckBelow();
-        }
-        */
-    }
-
     public void CheckBelow()
     {
         positionInfo = drop.PositionInfo;
@@ -63,18 +53,42 @@ public class DropFallController : MonoBehaviour
         {
             MoveDown();
         }
-
-        // EventManager.OnDropsFall?.Invoke();
     }
 
     private void MoveDown()
-    {
+    {      
         positionInfo = drop.PositionInfo;
         int rowPosition = positionInfo.x;
         int columnPosition = positionInfo.z;
 
         transform.position += Vector3.back * cellSize;
-        // transform.DOMove(transform.position + Vector3.back, 0.05f);
+        // transform.DOMove(transform.position + Vector3.back, 0.5f);
+        
+        (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
+        positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
+        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
+        drop.PositionInfo = positionInfo;
+
+        // todo refactor
+        if (rowPosition + 2 >= boardSize)
+        {
+            isBelowEmpty = false;
+        }
+        else
+        {
+            isBelowEmpty = !board.boardArray[rowPosition + 2, columnPosition].gameObject.activeInHierarchy;
+        }
+    }
+
+    private IEnumerator MoveWithDelay()
+    {
+        positionInfo = drop.PositionInfo;
+        int rowPosition = positionInfo.x;
+        int columnPosition = positionInfo.z;
+
+        transform.DOMove(transform.position + Vector3.back, 0.5f);
+        yield return new WaitForSeconds(0.55f);
+
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();

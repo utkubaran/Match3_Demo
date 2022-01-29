@@ -31,7 +31,6 @@ public class BoardMatchController : MonoBehaviour
         boardArr = board.boardArray;
         boardSize = board.BoardSize;
         matchedDrops = new List<Transform>();
-        // InvokeRepeating("CheckForMatchedDrops", 2f, 1f);
     }
 
     private void CheckForMatchedDrops()
@@ -41,7 +40,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.26f);
         CheckMatchesInRows();
         CheckMatchesInColumns();
         HandleMatches();
@@ -66,35 +65,6 @@ public class BoardMatchController : MonoBehaviour
                         matchedDrops.Add(boardArr[row, column - 2].transform);
                         matchedDrops.Add(boardArr[row, column - 1].transform);
                         matchedDrops.Add(boardArr[row, column].transform);
-                        
-                        /*
-                        if (column + 1 < boardSize && boardArr[row, column + 1].gameObject.activeInHierarchy)
-                        {
-                            DropColor.DropColorState followingDrop = boardArr[row, column + 1].GetComponent<Drop>().DropColorInfo;
-
-                            if (followingDrop == currentDrop)
-                            {
-                                if (column + 2 < boardSize && boardArr[row, column + 2].gameObject.activeInHierarchy)
-                                {
-                                    DropColor.DropColorState twoFollowingDrop = boardArr[row, column + 2].GetComponent<Drop>().DropColorInfo;
-
-                                    if (twoFollowingDrop == currentDrop)
-                                    {
-                                        matchedDrops.Add(boardArr[row, column + 2].transform);
-                                    }
-                                    else
-                                    {
-                                        matchedDrops.Add(boardArr[row, column + 1].transform);
-                                    }
-                                }
-                                else
-                                {
-                                    matchedDrops.Add(boardArr[row, column + 1].transform);
-
-                                }
-                            }
-                        }
-                        */
                     }
                 }
             }
@@ -120,36 +90,6 @@ public class BoardMatchController : MonoBehaviour
                         matchedDrops.Add(boardArr[row - 2, column].transform);
                         matchedDrops.Add(boardArr[row - 1, column].transform);
                         matchedDrops.Add(boardArr[row, column].transform);
-
-                        /*
-                        if (row + 1 < boardSize && boardArr[row + 1, column].gameObject.activeInHierarchy)
-                        {
-                            DropColor.DropColorState lowerDrop = boardArr[row + 1, column].GetComponent<Drop>().DropColorInfo;
-
-                            if (lowerDrop == currentDrop)
-                            {
-                                if (row + 2 < boardSize && boardArr[row + 2, column].gameObject.activeInHierarchy)
-                                {
-                                    DropColor.DropColorState twoLowerDrop = boardArr[row + 2, column].GetComponent<Drop>().DropColorInfo;
-
-                                    if (twoLowerDrop == currentDrop)
-                                    {
-                                        matchedDrops.Add(boardArr[row + 2, column].transform);
-
-                                    }
-                                    else
-                                    {
-                                        matchedDrops.Add(boardArr[row + 1, column].transform);
-
-                                    }
-                                }
-                                else
-                                {
-                                    matchedDrops.Add(boardArr[row + 1, column].transform);
-                                }
-                            }
-                        }
-                        */
                     }
                 }
             }
