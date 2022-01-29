@@ -25,21 +25,6 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
         previousPositionInfo = positionInfo;
     }
 
-    private void Update()
-    {
-        /*
-        while (destroyTimer > 0 && isMatch)
-        {
-            destroyTimer -= Time.deltaTime;
-            transform.localScale  = Vector3.Lerp(transform.localScale, Vector3.one * 0.1f, 0.5f);
-        }
-
-        if (destroyTimer > 0) return;
-        this.gameObject.SetActive(false);
-        transform.position = (Vector3.forward + Vector3.left) * 5f;
-        */
-    }
-
     public void OnObjectSpawn()
     {
         return;

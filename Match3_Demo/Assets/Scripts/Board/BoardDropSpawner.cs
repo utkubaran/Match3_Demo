@@ -48,10 +48,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private IEnumerator SpawnDropsWithDelay()
     {
-        if (isProcessOn) yield return null;
-
-        isProcessOn = true;
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
         bool isSpawned = false;
         previousNum = 10;
 
@@ -93,11 +90,9 @@ public class BoardDropSpawner : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.1f);
             EventManager.OnBoardCheck?.Invoke();
         }
-
-        isProcessOn = false;
 
         /*
         if (spawnedDrops.Count != 0)

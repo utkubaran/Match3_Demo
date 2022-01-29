@@ -40,7 +40,8 @@ public class BoardGapController : MonoBehaviour
     private IEnumerator CheckGapsWithDelay()
     {
         // one cycle
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
+        isBoardMoved = false;
 
         boardArr = board.boardArray;
 
@@ -52,11 +53,15 @@ public class BoardGapController : MonoBehaviour
                 {
                     board.boardArray[row, column].GetComponent<DropFallController>()?.CheckBelow();
                 }
+                else
+                {
+                    isBoardMoved = true;
+                }
             }
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
         }
 
-        EventManager.OnDropsFall?.Invoke();
+        if (isBoardMoved)   EventManager.OnDropsFall?.Invoke();
     }
 }
