@@ -10,7 +10,7 @@ public class BoardGapController : MonoBehaviour
 
     private bool isBoardMoved;
 
-    private float bufferTime = 0.125f;
+    private float bufferTime = 0.1f;
 
     private void OnEnable()
     {
@@ -66,7 +66,7 @@ public class BoardGapController : MonoBehaviour
             yield return new WaitForSeconds(bufferTime);
         }
         
-        yield return new WaitForSeconds(bufferTime);
+        // yield return new WaitForSeconds(bufferTime * 2);
 
         if (isBoardMoved)   EventManager.OnDropsFall?.Invoke();
     }

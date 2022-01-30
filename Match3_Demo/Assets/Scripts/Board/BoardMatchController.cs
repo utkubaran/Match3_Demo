@@ -40,9 +40,9 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.15f);
-        CheckMatchesInColumns();
+        yield return new WaitForSeconds(0.1f);
         CheckMatchesInRows();
+        CheckMatchesInColumns();
         HandleMatches();
     }
 
@@ -116,8 +116,6 @@ public class BoardMatchController : MonoBehaviour
         {
             board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
         }
-
-        Debug.Log("Completed my job!");
 
         matchedDrops.Clear();
         yield return new WaitForSeconds(0.35f);

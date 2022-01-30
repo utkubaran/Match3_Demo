@@ -11,7 +11,7 @@ public class DropFallController : MonoBehaviour
 
     private int boardSize;
 
-    private float cellSize, fallDownDuration = 0.1f, bufferTime = 0.025f;
+    private float cellSize, fallDownDuration = 0.2f, bufferTime = 0.05f;
 
     private Vector3Int positionInfo;
 
@@ -42,21 +42,6 @@ public class DropFallController : MonoBehaviour
         if (!isBelowEmpty) return;
 
         StartCoroutine(MoveDownWithDelay());
-
-        /*
-        Tween moveTween = transform.DOMove(transform.position + Vector3.back * cellSize, 0.1f);
-        moveTween.Play();
-        (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
-        positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
-        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
-        drop.PositionInfo = positionInfo;
-        moveTween.OnComplete(CheckBelow);
-
-        while (isBelowEmpty && positionInfo.x < boardSize - 1)
-        {
-            MoveDown();
-        }
-        */
     }
 
     private IEnumerator MoveDownWithDelay()
@@ -65,37 +50,11 @@ public class DropFallController : MonoBehaviour
         int columnPosition = positionInfo.z;
 
         transform.DOMove(transform.position + Vector3.back * cellSize, fallDownDuration);
-        // yield return new WaitForSeconds(0.1f);
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
         drop.PositionInfo = positionInfo;
-        yield return new WaitForSeconds(fallDownDuration + bufferTime);
+        yield return new WaitForSeconds(fallDownDuration);
         CheckBelow();
-    }
-
-    private void MoveDown()
-    {   
-        positionInfo = drop.PositionInfo;
-        int rowPosition = positionInfo.x;
-        int columnPosition = positionInfo.z;
-
-        transform.position += Vector3.back * cellSize;
-        transform.DOMove(transform.position + Vector3.back * cellSize, 0.25f);
-        
-        (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
-        positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
-        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
-        drop.PositionInfo = positionInfo;
-
-        // todo refactor
-        if (rowPosition + 2 >= boardSize)
-        {
-            isBelowEmpty = false;
-        }
-        else
-        {
-            isBelowEmpty = !board.boardArray[rowPosition + 2, columnPosition].gameObject.activeInHierarchy;
-        }
     }
 }
