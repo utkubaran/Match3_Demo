@@ -40,9 +40,9 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.25f);
-        CheckMatchesInRows();
+        yield return new WaitForSeconds(0.15f);
         CheckMatchesInColumns();
+        CheckMatchesInRows();
         HandleMatches();
     }
 

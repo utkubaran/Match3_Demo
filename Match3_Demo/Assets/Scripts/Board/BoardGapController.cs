@@ -10,6 +10,8 @@ public class BoardGapController : MonoBehaviour
 
     private bool isBoardMoved;
 
+    private float bufferTime = 0.125f;
+
     private void OnEnable()
     {
         EventManager.OnDropMatch.AddListener(CheckGaps);
@@ -42,7 +44,7 @@ public class BoardGapController : MonoBehaviour
         /// row by row starting from row index = 6.
         /// </summary>
         /// <returns></returns>
-        yield return new WaitForSeconds(0.1f);
+        // yield return new WaitForSeconds(0.1f);
         isBoardMoved = false;
 
         boardArr = board.boardArray;
@@ -61,8 +63,10 @@ public class BoardGapController : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(bufferTime);
         }
+        
+        yield return new WaitForSeconds(bufferTime);
 
         if (isBoardMoved)   EventManager.OnDropsFall?.Invoke();
     }

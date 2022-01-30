@@ -11,7 +11,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private ObjectPooler objectPooler;
 
-    private float cellSize, bufferTime = 0.15f;
+    private float cellSize, bufferTime = 0.125f;
 
     private GameObject[,] boardArr;
 
@@ -67,9 +67,7 @@ public class BoardDropSpawner : MonoBehaviour
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
                 yield return new WaitForSeconds(bufferTime);
-                // EventManager.OnDropSpawned?.Invoke();
                 obj.GetComponent<DropFallController>()?.CheckBelow();
-                // spawnedDrops.Add(obj);
                 previousNum = randomNum;
             }
         }

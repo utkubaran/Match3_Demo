@@ -13,7 +13,7 @@ public class PlayerInputController : MonoBehaviour
 
     private Transform selectedDrop;
 
-    private float timeRemaining, moveTimer = 1f;
+    private float timeRemaining, moveTimer = 1.5f;
 
     private bool isPlaying;
 
