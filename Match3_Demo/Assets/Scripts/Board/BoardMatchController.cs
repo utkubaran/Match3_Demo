@@ -112,10 +112,13 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator DestroyMatchedDrops()
     {
+        /*
         foreach (var drop in matchedDrops)
         {
-            board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
+            // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
         }
+        */
+        Debug.Log("match");
 
         matchedDrops.Clear();
         yield return new WaitForSeconds(0.35f);

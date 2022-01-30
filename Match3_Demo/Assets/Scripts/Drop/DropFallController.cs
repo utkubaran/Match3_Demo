@@ -11,7 +11,7 @@ public class DropFallController : MonoBehaviour
 
     private int boardSize;
 
-    private float cellSize;
+    private float cellSize, fallDownDuration = 0.1f, bufferTime = 0.025f;
 
     private Vector3Int positionInfo;
 
@@ -41,8 +41,9 @@ public class DropFallController : MonoBehaviour
 
         if (!isBelowEmpty) return;
 
-        int rowPosition = positionInfo.x;
-        int columnPosition = positionInfo.z;
+        StartCoroutine(MoveDownWithDelay());
+
+        /*
         Tween moveTween = transform.DOMove(transform.position + Vector3.back * cellSize, 0.1f);
         moveTween.Play();
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
@@ -51,12 +52,26 @@ public class DropFallController : MonoBehaviour
         drop.PositionInfo = positionInfo;
         moveTween.OnComplete(CheckBelow);
 
-        /*
         while (isBelowEmpty && positionInfo.x < boardSize - 1)
         {
             MoveDown();
         }
         */
+    }
+
+    private IEnumerator MoveDownWithDelay()
+    {        
+        int rowPosition = positionInfo.x;
+        int columnPosition = positionInfo.z;
+
+        transform.DOMove(transform.position + Vector3.back * cellSize, fallDownDuration);
+        // yield return new WaitForSeconds(0.1f);
+        (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
+        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
+        positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
+        drop.PositionInfo = positionInfo;
+        yield return new WaitForSeconds(fallDownDuration + bufferTime);
+        CheckBelow();
     }
 
     private void MoveDown()

@@ -11,7 +11,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     private int boardSize;
 
-    private float cellSize, moveBackTime = 0.1f;
+    private float cellSize, moveBackDuration = 0.1f, swipeMovementDuration = 0.2f;
 
     private Vector3Int positionInfo, previousPositionInfo;
 
@@ -25,13 +25,13 @@ public class DropMovementController : MonoBehaviour, IMoveable
     private void OnEnable()
     {
         EventManager.OnDropMatch.AddListener( () => previousPositionInfo = positionInfo);
-        EventManager.OnNoMatch.AddListener(GoPreviousPositionWithDelay);
+        EventManager.OnNoMatch.AddListener(GoBackPreviousPosition);
     }
 
     private void OnDisable()
     {
         EventManager.OnDropMatch.RemoveListener( () => previousPositionInfo = positionInfo);
-        EventManager.OnNoMatch.RemoveListener(GoPreviousPositionWithDelay);
+        EventManager.OnNoMatch.RemoveListener(GoBackPreviousPosition);
     }
 
     private void Start()
@@ -69,60 +69,44 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
         if (movementDir == Vector3.forward)
         {
-            if (rowPosition - 1 < 0 || !board.boardArray[rowPosition - 1, columnPosition].gameObject.activeInHierarchy)
-            {
-                Debug.Log("Can't Move!");
-                return;
-            }
+            if (rowPosition - 1 < 0 || !board.boardArray[rowPosition - 1, columnPosition].gameObject.activeInHierarchy) return;
 
             isMoved = true;
             board.boardArray[rowPosition - 1, columnPosition].GetComponent<DropMovementController>()?.ChangePlace(Vector3.back, 1, 0);
-            myTween = transform.DOMove(transform.position + movementDir * cellSize, 0.2f);         
+            myTween = transform.DOMove(transform.position + movementDir * cellSize, swipeMovementDuration);         
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition - 1, columnPosition]) = (board.boardArray[rowPosition - 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x--;
             myTween.OnComplete( () => EventManager.OnPlayerSwiped?.Invoke());            
         }
         else if (movementDir == Vector3.back)
         {
-            if (rowPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition + 1, columnPosition].gameObject.activeInHierarchy)
-            {
-                Debug.Log("Can't Move!");
-                return;
-            }
+            if (rowPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition + 1, columnPosition].gameObject.activeInHierarchy) return;
 
             isMoved = true;
             board.boardArray[rowPosition + 1, columnPosition].GetComponent<DropMovementController>()?.ChangePlace(Vector3.forward, -1, 0);
-            myTween = transform.DOMove(transform.position + movementDir * cellSize, 0.2f);
+            myTween = transform.DOMove(transform.position + movementDir * cellSize, swipeMovementDuration);
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
             positionInfo.x++;
             myTween.OnComplete( () => EventManager.OnPlayerSwiped?.Invoke());            
         }
         else if (movementDir == Vector3.right)
         {
-            if (columnPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition, columnPosition + 1].gameObject.activeInHierarchy)
-            {
-                Debug.Log("Can't Move!");
-                return;
-            }
+            if (columnPosition + 1 >= board.BoardSize || !board.boardArray[rowPosition, columnPosition + 1].gameObject.activeInHierarchy) return;
 
             isMoved = true;
             board.boardArray[rowPosition, columnPosition + 1].GetComponent<DropMovementController>()?.ChangePlace(Vector3.left, 0, -1);
-            myTween = transform.DOMove(transform.position + movementDir * cellSize, 0.2f);
+            myTween = transform.DOMove(transform.position + movementDir * cellSize, swipeMovementDuration);
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition + 1]) = (board.boardArray[rowPosition, columnPosition + 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z++;
             myTween.OnComplete( () => EventManager.OnPlayerSwiped?.Invoke());
         }
         else if (movementDir == Vector3.left)
         {
-            if (columnPosition - 1 < 0 || !board.boardArray[rowPosition, columnPosition - 1].gameObject.activeInHierarchy)
-            {
-                Debug.Log("Can't Move!");
-                return;
-            }
+            if (columnPosition - 1 < 0 || !board.boardArray[rowPosition, columnPosition - 1].gameObject.activeInHierarchy) return;
 
             isMoved = true;
             board.boardArray[rowPosition, columnPosition - 1].GetComponent<DropMovementController>()?.ChangePlace(Vector3.right, 0, 1);
-            myTween = transform.DOMove(transform.position + movementDir * cellSize, 0.2f);
+            myTween = transform.DOMove(transform.position + movementDir * cellSize, swipeMovementDuration);
             (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition, columnPosition - 1]) = (board.boardArray[rowPosition, columnPosition - 1], board.boardArray[rowPosition, columnPosition]);
             positionInfo.z--;
             myTween.OnComplete( () => EventManager.OnPlayerSwiped?.Invoke());
@@ -137,7 +121,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
         isMoved = true;
         positionInfo.x += rowChange;
         positionInfo.z += columnChange;
-        transform.DOMove(transform.position + movementDir * cellSize, 0.2f);
+        transform.DOMove(transform.position + movementDir * cellSize, swipeMovementDuration);
         
         drop.PositionInfo = positionInfo;
     }
@@ -147,21 +131,16 @@ public class DropMovementController : MonoBehaviour, IMoveable
         if (positionInfo.x <= 0) return;
 
         transform.position += Vector3.forward * cellSize;
-        // transform.DOMove(transform.position + Vector3.forward * cellSize, 0.095f);
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
         drop.PositionInfo = positionInfo;
     }
 
-    private void GoPreviousPositionWithDelay()
+    private void GoBackPreviousPosition()
     {
-        if (isMoved) StartCoroutine(GoPreviousPosition());
-    }
+        if (!isMoved) return;
 
-    private IEnumerator GoPreviousPosition()
-    {
         Vector3 previousPosition = new Vector3(previousPositionInfo.z * cellSize, 0f, previousPositionInfo.x * -cellSize);
-        transform.DOMove(previousPosition, 0.1f);
-        yield return new WaitForSeconds(moveBackTime);
+        transform.DOMove(previousPosition, moveBackDuration);
         board.boardArray[previousPositionInfo.x, previousPositionInfo.z] = this.gameObject;
         positionInfo = previousPositionInfo;
         drop.PositionInfo = positionInfo;
