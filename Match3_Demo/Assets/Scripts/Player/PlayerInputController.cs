@@ -38,7 +38,6 @@ public class PlayerInputController : MonoBehaviour
 
     void Start()
     {
-        isPlaying = true;       // todo refactor after events are enabled
         timeRemaining = moveTimer;
     }
 

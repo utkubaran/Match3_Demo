@@ -61,7 +61,7 @@ public class ObjectPooler : MonoBehaviour
         
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;        // todo delete if no need
+        objectToSpawn.transform.rotation = rotation;
 
         poolDictionary[color].Enqueue(objectToSpawn);
 

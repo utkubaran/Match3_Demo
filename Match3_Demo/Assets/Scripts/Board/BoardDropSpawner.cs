@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoardDropSpawner : MonoBehaviour
 {
     [SerializeField, Tooltip("Please select spawner columns.")]
-    private bool[] spawnerColumns;          // to choose which columns have respawn feature during gamepaly
+    private bool[] spawnerColumns;          // To choose which columns have respawn feature during gamepaly
 
     private Board board;
 

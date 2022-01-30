@@ -138,7 +138,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
         positionInfo.x += rowChange;
         positionInfo.z += columnChange;
         transform.DOMove(transform.position + movementDir * cellSize, 0.2f);
-        // this.transform.position += movementDir * cellSize;
         
         drop.PositionInfo = positionInfo;
     }
@@ -148,7 +147,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
         if (positionInfo.x <= 0) return;
 
         transform.position += Vector3.forward * cellSize;
-        // transform.DOMove(Vector3.forward * cellSize, 0.095f);
         // transform.DOMove(transform.position + Vector3.forward * cellSize, 0.095f);
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);
         drop.PositionInfo = positionInfo;
