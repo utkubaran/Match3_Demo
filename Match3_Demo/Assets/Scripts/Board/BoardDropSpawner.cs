@@ -11,7 +11,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private ObjectPooler objectPooler;
 
-    private float cellSize;
+    private float cellSize, bufferTime = 0.15f;
 
     private GameObject[,] boardArr;
 
@@ -43,7 +43,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private IEnumerator SpawnDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(bufferTime);
         bool isSpawned = false;
         previousNum = 10;
 
@@ -66,7 +66,7 @@ public class BoardDropSpawner : MonoBehaviour
                 GameObject obj = objectPooler.SpawnFromPool((DropColor.DropColorState)randomNum, spawnPos, Quaternion.Euler(90f, 0f, 0f));
                 obj.GetComponent<Drop>().PositionInfo = new Vector3Int(0, 0, i);
                 board.boardArray.SetValue(obj, 0, i);
-                yield return new WaitForSeconds(0.15f);
+                yield return new WaitForSeconds(bufferTime);
                 // EventManager.OnDropSpawned?.Invoke();
                 obj.GetComponent<DropFallController>()?.CheckBelow();
                 // spawnedDrops.Add(obj);
@@ -82,7 +82,7 @@ public class BoardDropSpawner : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(bufferTime);
             EventManager.OnBoardCheck?.Invoke();
         }
     }

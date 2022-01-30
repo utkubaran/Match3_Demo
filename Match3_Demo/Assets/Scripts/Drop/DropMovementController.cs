@@ -128,7 +128,7 @@ public class DropMovementController : MonoBehaviour, IMoveable
 
     public void MoveUp()
     {
-        if (positionInfo.x <= 0) return;
+        if (positionInfo.x <= 0 || this.gameObject.activeInHierarchy) return;
 
         transform.position += Vector3.forward * cellSize;
         positionInfo = new Vector3Int(positionInfo.x - 1, 0, positionInfo.z);

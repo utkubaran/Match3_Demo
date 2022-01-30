@@ -40,7 +40,7 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator CheckForMatchedDropsWithDelay()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
         CheckMatchesInRows();
         CheckMatchesInColumns();
         HandleMatches();
@@ -112,13 +112,12 @@ public class BoardMatchController : MonoBehaviour
 
     private IEnumerator DestroyMatchedDrops()
     {
-        /*
         foreach (var drop in matchedDrops)
         {
-            // board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
+            board.boardArray[drop.GetComponent<Drop>().PositionInfo.x, drop.GetComponent<Drop>().PositionInfo.z].gameObject.GetComponent<Drop>().OnMatch();
         }
-        */
-        Debug.Log("match");
+
+        Debug.Log("Completed my job!");
 
         matchedDrops.Clear();
         yield return new WaitForSeconds(0.35f);
