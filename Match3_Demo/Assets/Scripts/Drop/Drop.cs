@@ -15,7 +15,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     private Vector3Int positionInfo, previousPositionInfo;
     public Vector3Int PositionInfo { get { return positionInfo; } set { positionInfo = value; } }
 
-    private float destroyTimer = 2f;
+    private float destroyTimer = 0.25f;
 
     private bool isMatch;
 
@@ -42,8 +42,8 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
 
     private IEnumerator ScaleDownWithDelay()
     {
-        transform.DOScale(Vector3.one * 0.01f, 0.5f);
-        yield return new WaitForSeconds(0.5f);
+        transform.DOScale(Vector3.one * 0.01f, destroyTimer);
+        yield return new WaitForSeconds(destroyTimer);
         this.gameObject.SetActive(false);
         transform.position = (Vector3.forward + Vector3.left) * 5f;
     }

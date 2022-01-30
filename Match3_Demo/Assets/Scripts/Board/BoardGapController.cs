@@ -13,13 +13,11 @@ public class BoardGapController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnDropMatch.AddListener(CheckGaps);
-        // EventManager.OnDropSpawned.AddListener(CheckGaps);
     }
 
     private void OnDisable()
     {
         EventManager.OnDropMatch.RemoveListener(CheckGaps);
-        // EventManager.OnDropSpawned.RemoveListener(CheckGaps);
     }
 
     private void Awake()
@@ -39,8 +37,12 @@ public class BoardGapController : MonoBehaviour
 
     private IEnumerator CheckGapsWithDelay()
     {
-        // one cycle
-        yield return new WaitForSeconds(0.3f);
+        /// <summary>
+        /// Rather than assigning each drop to control their belows, this function activates their CheckBelow method
+        /// row by row starting from row index = 6.
+        /// </summary>
+        /// <returns></returns>
+        yield return new WaitForSeconds(0.1f);
         isBoardMoved = false;
 
         boardArr = board.boardArray;
@@ -58,6 +60,8 @@ public class BoardGapController : MonoBehaviour
                     isBoardMoved = true;
                 }
             }
+
+            yield return new WaitForSeconds(0.15f);
         }
 
         if (isBoardMoved)   EventManager.OnDropsFall?.Invoke();

@@ -63,7 +63,7 @@ public class DropFallController : MonoBehaviour
 
         int rowPosition = positionInfo.x;
         int columnPosition = positionInfo.z;
-        Tween moveTween = transform.DOMove(transform.position + Vector3.back * cellSize, 0.05f);
+        Tween moveTween = transform.DOMove(transform.position + Vector3.back * cellSize, 0.1f);
         moveTween.Play();
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
@@ -87,11 +87,11 @@ public class DropFallController : MonoBehaviour
         int columnPosition = positionInfo.z;
 
         transform.position += Vector3.back * cellSize;
-        transform.DOMove(transform.position + Vector3.back * cellSize, 0.2f);
+        transform.DOMove(transform.position + Vector3.back * cellSize, 0.25f);
         
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
-        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
+        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
         drop.PositionInfo = positionInfo;
 
         // todo refactor
@@ -117,7 +117,7 @@ public class DropFallController : MonoBehaviour
         
         (board.boardArray[rowPosition, columnPosition], board.boardArray[rowPosition + 1, columnPosition]) = (board.boardArray[rowPosition + 1, columnPosition], board.boardArray[rowPosition, columnPosition]);
         positionInfo = new Vector3Int(rowPosition + 1, 0, columnPosition);
-        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>().MoveUp();
+        board.boardArray[rowPosition, columnPosition].GetComponent<DropMovementController>()?.MoveUp();
         drop.PositionInfo = positionInfo;
 
         // todo refactor

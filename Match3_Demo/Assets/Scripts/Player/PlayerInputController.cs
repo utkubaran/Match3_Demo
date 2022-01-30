@@ -62,7 +62,6 @@ public class PlayerInputController : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f, layerMask))
             {
                 selectedDrop = hit.transform;
-                hit.transform.GetComponent<DropFallController>().CheckBelow();
             }
         }
         else if (Input.GetMouseButtonUp(0))
@@ -76,7 +75,6 @@ public class PlayerInputController : MonoBehaviour
 
             swipeDirection = GetSwipeDirection(finalPos - startPos);
             selectedDrop.GetComponent<DropMovementController>()?.OnSwiped(swipeDirection);
-            EventManager.OnPlayerSwiped?.Invoke();
             swipeDirection = Vector3.zero;
             selectedDrop = null;
         }
@@ -88,7 +86,6 @@ public class PlayerInputController : MonoBehaviour
         float zDif = inputDir.y;
         bool isMovementOnX = Mathf.Abs(xDif) > Mathf.Abs(zDif);
 
-        // todo refactor
         if (isMovementOnX && xDif > 0)
         {
             return Vector3.right;
