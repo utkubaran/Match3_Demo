@@ -118,7 +118,7 @@ public class BoardMatchController : MonoBehaviour
         }
 
         matchedDrops.Clear();
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.25f);
         EventManager.OnDropMatch?.Invoke();
     }
 

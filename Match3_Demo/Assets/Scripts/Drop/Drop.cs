@@ -17,7 +17,7 @@ public class Drop : MonoBehaviour, IPooledObject, IDrop
     private Vector3Int positionInfo;
     public Vector3Int PositionInfo { get { return positionInfo; } set { positionInfo = value; } }
 
-    private float destroyTimer = 0.25f;
+    private float destroyTimer = 0.2f;
 
     private void Start()
     {

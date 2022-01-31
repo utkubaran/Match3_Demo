@@ -11,7 +11,7 @@ public class BoardDropSpawner : MonoBehaviour
 
     private ObjectPooler objectPooler;
 
-    private float cellSize, bufferTime = 0.25f;
+    private float cellSize, bufferTime = 0.125f;
 
     private GameObject[,] boardArr;
 
@@ -75,12 +75,10 @@ public class BoardDropSpawner : MonoBehaviour
         if (isSpawned)
         {
             SpawnDrops();
-            // yield return new WaitForSeconds(0.125f);
-            // EventManager.OnDropsFall?.Invoke();
         }
         else
         {
-            yield return new WaitForSeconds(bufferTime * 2f);
+            yield return new WaitForSeconds(bufferTime);
             EventManager.OnBoardCheck?.Invoke();
         }
     }

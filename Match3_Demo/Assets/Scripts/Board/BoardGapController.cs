@@ -10,7 +10,7 @@ public class BoardGapController : MonoBehaviour
 
     private bool isBoardMoved;
 
-    private float bufferTime = 0.1f;
+    private float bufferTime = 0.125f;
 
     private void OnEnable()
     {

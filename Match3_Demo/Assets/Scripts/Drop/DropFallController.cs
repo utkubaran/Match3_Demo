@@ -11,7 +11,7 @@ public class DropFallController : MonoBehaviour
 
     private int boardSize;
 
-    private float cellSize, fallDownDuration = 0.2f, bufferTime = 0.05f;
+    private float cellSize, fallDownDuration = 0.1f;
 
     private Vector3Int positionInfo;
 
