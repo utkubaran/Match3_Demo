@@ -43,23 +43,6 @@ public class DropMovementController : MonoBehaviour, IMoveable
         previousPositionInfo = positionInfo;
     }
 
-    private void Update()
-    {
-        // todo delete
-        positionInfo = drop.PositionInfo;
-        int rowPos = positionInfo.x;
-        int columnPos = positionInfo.z;
-
-        bool isProblem = board.boardArray[rowPos, columnPos] != this.gameObject;
-
-        if (isProblem)
-        {
-            bool isReal = board.boardArray[rowPos, columnPos].gameObject == this.gameObject;
-            Debug.Log(isReal);
-            Debug.Log(positionInfo + "     " + ((transform.position.z / -cellSize)) + " , " + transform.position.x / cellSize + "   "  + transform.position);
-        }
-    }
-
     public void OnSwiped(Vector3 movementDir)
     {
         positionInfo = drop.PositionInfo;
